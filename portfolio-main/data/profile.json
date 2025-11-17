@@ -1,0 +1,29 @@
+{
+    "name": "Arya Laksmana Dewanata",
+    "description": "dedicated to the world of electronics for approximately 7 years, has completed several projects, from industrial projects to home projects",
+    "profileImage": "images/1.png",
+    "email": "arya.43422105@mhs.polines.ac.id",
+    "phone": "+62 857-0153-1222",
+    "socialMedia": [
+        {
+            "platform": "LinkedIn",
+            "url": "www.linkedin.com/in/arya-laksmana-dewanata-530934251"
+        },
+        {
+            "platform": "GitHub",
+            "url": "https://github.com/arlaksde"
+        }
+    ],
+    "cv": {
+			"text": "Download CV",
+			"file": "docs/cv2.pdf",
+			"icon": "fas fa-file-pdf"
+	},
+    "skills": [
+        {"name": "Internet of Things", "icon": "fas fa-wifi", "level": 90},
+	{"name": "Hardware Programming", "icon": "fas fa-c", "level": 90},
+        {"name": "Web Programming", "icon": "fab fa-js", "level": 70},
+	{"name": "Project Management", "icon": "fas fa-list-check", "level": 95},
+	{"name": "Foreign Languages", "icon": "fas fa-language", "level": 50}
+    ]
+}

@@ -1,0 +1,25 @@
+[
+    {
+        "company": "Freelance Vendors",
+        
+        "position": "assistant technician",
+        "year": "2022",
+        "description": "Programming a otomation of conveyor machine and rolling cigarette machine with PLC"
+    },
+    {
+        "company": "Panasonic Manufacturing Indonesia-Internship",
+        "logo":"images/pmi.jpg",
+        "position": "interns",
+        "year": "2022",
+        "description": "line the refrigerator onion rings with aluminum"
+        
+    },
+    {
+        "company": "Bandung Institute of Technology",
+        "logo":"images/itb.png",
+        "position": "interns",
+        "year": "2021-2022",
+        "description": "working on a soil moisture monitoring system and online attendance project"
+    }
+
+]

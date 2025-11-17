@@ -1,0 +1,17 @@
+[
+    {
+        "university": "Polytechnic State of Semarang",
+		"logo": "images/polines-logo.png",
+        "major": "Bachelor of Electronic Engineering Technology",
+        "year": "2022 - Now",
+        "description": "GPA 3.5 of 4.0"
+    },
+    {
+        "university": "SMK Negeri 1 Semarang",
+	 	"logo": "images/smk-logo.jpg",
+        "major": "Industrial Electronics Engineering",
+        "year": "2019 - 2022",
+        "description": "Point Average 85 of 100"
+    }
+
+]

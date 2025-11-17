@@ -1,0 +1,62 @@
+[
+    {
+        "title": "Sistem Janji Temu Dosen dan Mahasiswa",
+        "year": "2025",
+        "partner": "Riffatunnisa Fauziah Hanum",
+        "description": "create a website for a lecturer attendance monitoring system"
+    },
+     {
+        "title": "Smart Aquaculture System",
+        "year": "2025",
+        "description": "Building an Internet of Things (IoT) system to automate aquarium maintenance, reduce stress for users, and create an optimal stable aquatic environment for aquatic life "
+    },
+    {
+        "title": "smart home security with arduino uno",
+        "year": "2022",
+        "role": "Lead Engineer",
+        "description": "create a prototype of iot based home security with node mcu"
+
+    },
+    {
+        "title": "cigarette rolling machine",
+        "year": "2022",
+        "partner": "freelance vendors",
+        "role": "technician assistant",
+        "description": "making machine automation with plc and assembling star delta motor."
+    },
+    {
+        "title": "conveyor automation with PLC",
+        "year": "2022",
+        "partner": "freelance vendors",
+        "role": "Programmer PLC",
+        "description": "create machine automation with PLC"
+    },
+	{
+        "title": "soil moisture monitoring system using soil moisture",
+        "year": "2022",
+        "partner": "Bandung Institute of Technology.",
+        "role": "Project Lead",
+        "description": "assembling analog circuits"
+    },
+    {
+        "title": "online attendance using rfid",
+        "year": "2022",
+        "partner": "Clean Water Initiative",
+        "role": "Lead Engineer",
+        "description": "Developed a portable, solar-powered water purification system for rural communities. Achieved 99.9% purification efficiency."
+
+    },
+	{
+        "title": "stamping machine with pneumatic integrated with PLC",
+        "year": "2022",
+        "description": "making a prototype stamping machine with pneumatic and plc"
+
+    },
+	{
+        "title": "smart door lock system for bank security system",
+        "year": "2022",
+        "partner": "freelance vendors",
+        "role": "technician assistant",
+        "description": "create a security system for bank safes with infrared sensors and touch sensors"
+    }
+]
