@@ -4,16 +4,16 @@
     "year": "2025",
     "partner": "Riffatunnisa Fauziah Hanum",
     "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.",
-    "image": "images/skripsi.jpg",
-    "video": "",
+    "image": "images/janji.jpg",
+    "video": "https://canva.link/n6txybiqv1ozvpk",
     "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"]
   },
   {
     "title": "Smart Aquaculture System",
     "year": "2025",
     "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.",
-    "image": "images/aqua.jpeg",
-    "video": "",
+    "image": "images/aquac.jpeg",
+    "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96",
     "techStack": ["ESP32", "IoT", "Sensors", "Automation"]
   },
   {
