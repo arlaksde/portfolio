@@ -1,17 +1,19 @@
 // Load data from JSON files
 async function loadData() {
     try {
-        const [profileData, educationData, experienceData, projectsData] = await Promise.all([
+        const [profileData, educationData, experienceData, projectsData, certificatesData] = await Promise.all([
             fetch('data/profile.json').then(res => res.json()),
             fetch('data/education.json').then(res => res.json()),
             fetch('data/experience.json').then(res => res.json()),
-            fetch('data/projects.json').then(res => res.json())
+            fetch('data/projects.json').then(res => res.json()),
+            fetch('data/certificates.json').then(res => res.json())
         ]);
         
         renderProfile(profileData);
         renderEducation(educationData);
         renderExperience(experienceData);
         renderProjects(projectsData);
+        renderCertificates(certificatesData);
         
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -41,7 +43,7 @@ function renderProfile(data) {
         socialLinks.appendChild(link);
     });
 	
-	    // Render skills
+    // Render skills
     if (data.skills) {
         const skillsGrid = document.getElementById('skills-grid');
         data.skills.forEach(skill => {
@@ -137,6 +139,29 @@ function renderProjects(data) {
             </div>
         `;
         projectsGrid.appendChild(projectCard);
+    });
+}
+
+// Render Certificates Section
+function renderCertificates(data) {
+    const certificatesList = document.getElementById('certificates-list');
+    
+    data.forEach(cert => {
+        const certItem = document.createElement('div');
+        certItem.className = 'experience-item'; // Memakai layout yang mirip dengan experience agar serasi
+        certItem.innerHTML = `
+            <div class="exp-header">
+                ${cert.logo ? `<img src="${cert.logo}" alt="${cert.issuer} logo" class="exp-logo">` : ''}
+                <div>
+                    <h3>${cert.title}</h3>
+                    <p class="position">${cert.issuer}</p>
+                </div>
+            </div>
+            <p class="duration">${cert.year}</p>
+            <p>${cert.description}</p>
+            ${cert.link ? `<a href="${cert.link}" class="project-link" style="margin-top: 10px; display: inline-block;" target="_blank">View Certificate <i class="fas fa-external-link-alt"></i></a>` : ''}
+        `;
+        certificatesList.appendChild(certItem);
     });
 }
 
