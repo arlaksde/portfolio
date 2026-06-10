@@ -34,6 +34,7 @@ function renderProfile(data) {
     profilePic.alt = `${data.name}'s profile picture`;
     
     const socialLinks = document.getElementById('social-links');
+    socialLinks.innerHTML = ''; // Clear prior entries
     data.socialMedia.forEach(social => {
         const link = document.createElement('a');
         link.href = social.url;
@@ -46,6 +47,7 @@ function renderProfile(data) {
     // Render skills
     if (data.skills) {
         const skillsGrid = document.getElementById('skills-grid');
+        skillsGrid.innerHTML = ''; // Clear prior entries
         data.skills.forEach(skill => {
             const skillItem = document.createElement('div');
             skillItem.className = 'skill-item';
@@ -74,6 +76,7 @@ function renderProfile(data) {
 // Render Education Section
 function renderEducation(data) {
     const educationList = document.getElementById('education-list');
+    educationList.innerHTML = ''; // Clear prior entries
     
     data.forEach(edu => {
         const eduItem = document.createElement('div');
@@ -96,6 +99,7 @@ function renderEducation(data) {
 // Render Experience Section
 function renderExperience(data) {
     const experienceList = document.getElementById('experience-list');
+    experienceList.innerHTML = ''; // Clear prior entries
     
     data.forEach(exp => {
         const expItem = document.createElement('div');
@@ -118,6 +122,7 @@ function renderExperience(data) {
 // Render Projects Section
 function renderProjects(data) {
     const projectsGrid = document.getElementById('projects-grid');
+    projectsGrid.innerHTML = ''; // Clear prior entries
     
     data.forEach(project => {
         const projectCard = document.createElement('div');
@@ -135,7 +140,7 @@ function renderProjects(data) {
                     ${project.role ? `<span><i class="fas fa-user-tie"></i> ${project.role}</span>` : ''}
                 </div>
                 <p>${project.description}</p>
-                ${project.link ? `<a href="${project.link}" class="project-link" target="_blank">View Project <i class="fas fa-external-link-alt"></i></a>` : ''}
+                ${project.link ? `<a href="${project.link}" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>` : ''}
             </div>
         `;
         projectsGrid.appendChild(projectCard);
@@ -145,10 +150,11 @@ function renderProjects(data) {
 // Render Certificates Section
 function renderCertificates(data) {
     const certificatesList = document.getElementById('certificates-list');
+    certificatesList.innerHTML = ''; // Clear prior entries
     
     data.forEach(cert => {
         const certItem = document.createElement('div');
-        certItem.className = 'experience-item'; // Memakai layout yang mirip dengan experience agar serasi
+        certItem.className = 'experience-item'; 
         certItem.innerHTML = `
             <div class="exp-header">
                 ${cert.logo ? `<img src="${cert.logo}" alt="${cert.issuer} logo" class="exp-logo">` : ''}
@@ -159,7 +165,11 @@ function renderCertificates(data) {
             </div>
             <p class="duration">${cert.year}</p>
             <p>${cert.description}</p>
-            ${cert.link ? `<a href="${cert.link}" class="project-link" style="margin-top: 10px; display: inline-block;" target="_blank">View Certificate <i class="fas fa-external-link-alt"></i></a>` : ''}
+            ${cert.link ? `
+                <a href="${cert.link}" class="project-link" style="margin-top: 10px; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    View Certificate <i class="fas fa-external-link-alt"></i>
+                </a>
+            ` : ''}
         `;
         certificatesList.appendChild(certItem);
     });
