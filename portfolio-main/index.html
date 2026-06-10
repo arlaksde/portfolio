@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arlaksde - Engineering Portfolio</title>
+    <title>Arlaksde - Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -11,74 +11,70 @@
 <body>
     <header>
         <nav class="sidebar-nav">
-			<ul>
-				<li>
-					<a href="#profile" data-tooltip="Profile">
-						<i class="fas fa-user"></i>
-						<span class="nav-text">Profile</span>
-					</a>
-				</li>
-				<li>
-					<a href="#education" data-tooltip="Education">
-						<i class="fas fa-graduation-cap"></i>
-						<span class="nav-text">Education</span>
-					</a>
-				</li>
-				<li>
-					<a href="#experience" data-tooltip="Experience">
-						<i class="fas fa-briefcase"></i>
-						<span class="nav-text">Experience</span>
-					</a>
-				</li>
-				<li>
-					<a href="#projects" data-tooltip="Projects">
-						<i class="fas fa-code"></i>
-						<span class="nav-text">Research & Projects</span>
-					</a>
-				</li>
-				<li>
-					<a href="#certificates" data-tooltip="Certificates">
-						<i class="fas fa-certificate"></i>
-						<span class="nav-text">Certificates</span>
-					</a>
-				</li>
-				<li>
-					<a href="#face-analysis" data-tooltip="Face AI">
-						<i class="fas fa-smile-beam"></i>
-						<span class="nav-text">Face AI</span>
-					</a>
-				</li>
-			</ul>
-		</nav>
+            <ul>
+                <li>
+                    <a href="#profile" data-tooltip="Profile">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#education" data-tooltip="Education">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="nav-text">Education</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#experience" data-tooltip="Experience">
+                        <i class="fas fa-briefcase"></i>
+                        <span class="nav-text">Experience</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects" data-tooltip="Projects">
+                        <i class="fas fa-code"></i>
+                        <span class="nav-text">Research & Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#certificates" data-tooltip="Certificates">
+                        <i class="fas fa-certificate"></i>
+                        <span class="nav-text">Certificates</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </header>
 
     <main>
+        <!-- Profile Section -->
         <section id="profile" class="section">
-			<div class="container">
-				<div class="profile-content">
-					<div class="profile-image-container">
-						<img id="profile-pic" src="" alt="Profile Picture" class="profile-image">
-						<div class="profile-contact">
-							<p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
-							<p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
-							<div class="social-links" id="social-links"></div>
-							<a href="#" id="cv-download" class="cv-download-btn" title="Download CV">
-								<i class="fas fa-file-pdf"></i>
-							</a>
-						</div>
-					</div>
-					<div class="profile-info">
-						<h1 id="profile-name"></h1>
-						<p id="profile-description"></p>
-						<div class="skills-container" id="skills-container">
-							<h3>Skills</h3>
-							<div class="skills-grid" id="skills-grid"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+            <div class="container">
+                <div class="profile-content">
+                    <div class="profile-image-container">
+                        <img id="profile-pic" src="" alt="Profile Picture" class="profile-image">
+                        <div class="profile-contact">
+                            <p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
+                            <p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
+                            <div class="social-links" id="social-links"></div>
+                            <a href="#" id="cv-download" class="cv-download-btn" title="Download CV">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="profile-name"></h1>
+                        <p id="profile-description"></p>
+                        <div class="skills-container" id="skills-container">
+                            <h3>Skills</h3>
+                            <div class="skills-grid" id="skills-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Education Section -->
         <section id="education" class="section">
             <div class="container">
                 <h2>Education</h2>
@@ -86,6 +82,7 @@
             </div>
         </section>
 
+        <!-- Experience Section -->
         <section id="experience" class="section">
             <div class="container">
                 <h2>Work Experience</h2>
@@ -93,6 +90,7 @@
             </div>
         </section>
 
+        <!-- Projects Section -->
         <section id="projects" class="section">
             <div class="container">
                 <h2>Research and Projects</h2>
@@ -100,12 +98,26 @@
             </div>
         </section>
 
+        <!-- Certificates Section -->
         <section id="certificates" class="section">
             <div class="container">
                 <h2>Certificates</h2>
                 <div class="experience-list" id="certificates-list"></div>
             </div>
         </section>
+    </main>
+
+    <!-- Global Preview Pop-up Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title" style="margin-bottom: 1rem; color: var(--secondary-color);">Pratinjau</h3>
+            <div id="modal-body" style="width: 100%; height: calc(100% - 40px); overflow: auto;">
+                <!-- Konten Gambar/PDF/Iframe disuntikkan lewat JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata</p>
     </footer>
