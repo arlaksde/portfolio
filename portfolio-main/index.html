@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>arlaksde</title>
+    <title>Arlaksde - Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -42,6 +42,12 @@
 						<span class="nav-text">Certificates</span>
 					</a>
 				</li>
+				<li>
+					<a href="#heart-monitor" data-tooltip="BPM Monitor">
+						<i class="fas fa-heartbeat"></i>
+						<span class="nav-text">BPM Monitor</span>
+					</a>
+				</li>
 			</ul>
 		</nav>
     </header>
@@ -64,10 +70,10 @@
 					<div class="profile-info">
 						<h1 id="profile-name"></h1>
 						<p id="profile-description"></p>
-							<div class="skills-container" id="skills-container">
-								<h3>Skills</h3>
-								<div class="skills-grid" id="skills-grid"></div>
-							</div>
+						<div class="skills-container" id="skills-container">
+							<h3>Skills</h3>
+							<div class="skills-grid" id="skills-grid"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -100,7 +106,40 @@
                 <div class="experience-list" id="certificates-list"></div>
             </div>
         </section>
+
+        <section id="heart-monitor" class="section">
+            <div class="container">
+                <h2>Live Heart Rate (BPM) Monitor</h2>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: #666;">
+                    Fitur berbasis Computer Vision untuk mengestimasi detak jantung (rPPG) melalui perubahan rona sirkulasi darah pada area dahi/pipi (ROI).
+                </p>
+                <div class="bpm-container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: center;">
+                    <div class="video-box" style="position: relative; background: #000; border-radius: 8px; overflow: hidden; width: 100%; max-width: 480px; aspect-ratio: 4/3;">
+                        <video id="webcam" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+                        <canvas id="roi-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                    </div>
+                    <div class="bpm-display-panel" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; min-width: 250px;">
+                        <i class="fas fa-heartbeat" id="heart-icon" style="font-size: 3rem; color: #e74c3c; margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--secondary-color);">Heart Rate</h3>
+                        <div id="bpm-value" style="font-size: 3.5rem; font-weight: bold; color: #2c3e50; margin: 0.5rem 0;">-- <span style="font-size: 1.5rem; color: #888;">BPM</span></div>
+                        <p id="bpm-status" style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 1.5rem;">Kamera Mati</p>
+                        <button id="start-bpm-btn" class="cv-download-btn" style="width: 100%; border-radius: 4px; height: 45px; background: var(--primary-color); color: white; border: none; font-weight: bold; cursor: pointer;">
+                            Aktifkan Kamera
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title" style="margin-bottom: 1rem; color: var(--secondary-color);">Pratinjau</h3>
+            <div id="modal-body" style="width: 100%; height: calc(100% - 40px); overflow: auto;">
+                </div>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata</p>
