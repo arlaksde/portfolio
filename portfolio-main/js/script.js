@@ -14,7 +14,7 @@ async function loadData() {
         renderExperience(experienceData);
         renderProjects(projectsData);
         renderCertificates(certificatesData);
-        setupModalEvents(); // Aktifkan handler pop-up modal
+        setupModalEvents();
         
         document.getElementById('current-year').textContent = new Date().getFullYear();
     } catch (error) {
@@ -29,21 +29,16 @@ function openModalPreview(title, url) {
     const modalBody = document.getElementById('modal-body');
     
     modalTitle.textContent = title;
-    modalBody.innerHTML = ''; // Kosongkan isi lama
+    modalBody.innerHTML = '';
     
-    // Deteksi tipe file/link
     if (url.includes('canva.link') || url.includes('canva.com')) {
-        // Jika link Canva, ubah ke format embed view agar bisa tampil di dalam modal
         let embedUrl = url.replace('/view', '/view?embed');
         modalBody.innerHTML = `<iframe src="${embedUrl}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>`;
     } else if (url.endsWith('.pdf') || url.includes('drive.google.com')) {
-        // Jika PDF atau Link Drive, tampilkan via iframe viewer
         modalBody.innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`;
     } else if (url.match(/\.(jpeg|jpg|gif|png)$/) != null || url.startsWith('images/')) {
-        // Jika gambar gambar biasa
         modalBody.innerHTML = `<img src="${url}" style="max-width:100%; max-height:100%; display:block; margin:0 auto; object-fit:contain;">`;
     } else {
-        // Opsi fallback tautan umum
         modalBody.innerHTML = `<p style="padding:2rem; text-align:center;">Tidak dapat memuat pratinjau langsung. <a href="${url}" target="_blank" class="project-link">Klik di sini untuk membuka tautan di tab baru.</a></p>`;
     }
     
@@ -54,7 +49,9 @@ function setupModalEvents() {
     const modal = document.getElementById('preview-modal');
     const closeBtn = document.querySelector('.close-modal');
     
-    closeBtn.onclick = function() { modal.style.display = 'none'; document.getElementById('modal-body').innerHTML = ''; }
+    if(closeBtn) {
+        closeBtn.onclick = function() { modal.style.display = 'none'; document.getElementById('modal-body').innerHTML = ''; }
+    }
     window.onclick = function(e) { if (e.target == modal) { modal.style.display = 'none'; document.getElementById('modal-body').innerHTML = ''; } }
 }
 
@@ -66,7 +63,7 @@ function renderProfile(data) {
     document.getElementById('profile-phone').textContent = data.phone;
     
     const profilePic = document.getElementById('profile-pic');
-    profilePic.src = data.profileImage;
+    if (profilePic) profilePic.src = data.profileImage;
     
     const socialLinks = document.getElementById('social-links');
     socialLinks.innerHTML = '';
@@ -115,7 +112,7 @@ function renderExperience(data) {
     });
 }
 
-// Render Projects (Suku cadang tombol diubah untuk memicu Pop-up Modal)
+// Render Projects
 function renderProjects(data) {
     const projectsGrid = document.getElementById('projects-grid');
     projectsGrid.innerHTML = '';
@@ -144,13 +141,12 @@ function renderProjects(data) {
         projectsGrid.appendChild(projectCard);
     });
 
-    // Pasang click listener ke tombol demo proyek
     document.querySelectorAll('.btn-trigger-modal').forEach(btn => {
         btn.onclick = function() { openModalPreview(this.getAttribute('data-title'), this.getAttribute('data-url')); }
     });
 }
 
-// Render Certificates (Suku cadang diubah untuk memicu Pop-up Modal)
+// Render Certificates
 function renderCertificates(data) {
     const certificatesList = document.getElementById('certificates-list');
     certificatesList.innerHTML = '';
@@ -172,9 +168,9 @@ function renderCertificates(data) {
     });
 }
 
-// ==========================================
-// NEW: CORE COMPUTER VISION & ROI BPM ENGINE (rPPG)
-// ==========================================
+// ===================================================
+// FIXED ENGINE: ADVANCED rPPG DIGITAL SIGNAL PROCESSING (DSP)
+// ===================================================
 let bpmStream = null;
 let bpmInterval = null;
 
@@ -187,13 +183,15 @@ function initHeartRateMonitor() {
     const bpmStatus = document.getElementById('bpm-status');
     const heartIcon = document.getElementById('heart-icon');
 
-    // Variabel rPPG Klien murni
-    let frameValues = [];
-    const bufferSize = 150; // Menyimpan data frame ~5 detik pada 30fps
+    // Filter Window & Sinyal
+    let rawSignal = [];
+    let filteredSignal = [];
+    let lastPeakTime = Date.now();
+    let bpmsList = [];
+    const filterWindowSize = 5; // Ukuran Moving Average Filter
 
     startBtn.onclick = async function() {
         if (bpmStream) {
-            // Matikan Kamera
             clearInterval(bpmInterval);
             bpmStream.getTracks().forEach(track => track.stop());
             bpmStream = null;
@@ -203,6 +201,7 @@ function initHeartRateMonitor() {
             bpmStatus.textContent = "Kamera Mati";
             heartIcon.classList.remove('pulse-fast');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            rawSignal = []; filteredSignal = []; bpmsList = [];
             return;
         }
 
@@ -211,79 +210,93 @@ function initHeartRateMonitor() {
             bpmStream = await navigator.mediaDevices.getUserMedia({ video: { width: 480, height: 360, facingMode: "user" }, audio: false });
             video.srcObject = bpmStream;
             startBtn.textContent = "Matikan Kamera";
-            bpmStatus.textContent = "Kalibrasi ROI Wajah...";
+            bpmStatus.textContent = "Posisikan wajah tenang di depan kamera...";
             
             video.onloadedmetadata = () => {
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 
-                // Mulai pemrosesan loop frame Computer Vision
                 bpmInterval = setInterval(() => {
-                    // 1. Gambar video asli ke canvas ROI
                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                     
-                    // 2. Tentukan Area ROI Kotak di Tengah Frame (Merepresentasikan area dahi/pipi)
-                    const roiWidth = 100;
-                    const roiHeight = 60;
+                    // Definisi Ukuran dan Koordinat Kotak ROI (Pengamatan Dahi/Kulit Wajah)
+                    const roiWidth = 90;
+                    const roiHeight = 50;
                     const roiX = (canvas.width - roiWidth) / 2;
-                    const roiY = (canvas.height - roiHeight) / 3; // Sedikit agak ke atas untuk mendeteksi dahi
+                    const roiY = (canvas.height - roiHeight) / 3;
 
-                    // 3. Ekstrak data pixel di dalam ROI kotak tersebut
                     const imgData = ctx.getImageData(roiX, roiY, roiWidth, roiHeight);
-                    const data = imgData.data;
+                    const pixels = imgData.data;
                     
-                    let totalGreen = 0;
-                    let pixelCount = data.length / 4;
+                    let greenSum = 0;
+                    let count = pixels.length / 4;
 
-                    // Ambil kanal warna Hijau (Green), karena memiliki tingkat penyerapan cahaya oksihemoglobin darah paling sensitif di kulit
-                    for (let i = 0; i < data.length; i += 4) {
-                        totalGreen += data[i + 1]; // data[i] = R, data[i+1] = G, data[i+2] = B
+                    for (let i = 0; i < pixels.length; i += 4) {
+                        greenSum += pixels[i + 1]; // Ekstrak absorbsi oksihemoglobin kapiler (Kanal Hijau)
                     }
                     
-                    let avgGreen = totalGreen / pixelCount;
-                    frameValues.push(avgGreen);
-                    if (frameValues.length > bufferSize) frameValues.shift(); // Batasi buffer window sliding
+                    let currentGreenAverage = greenSum / count;
+                    rawSignal.push(currentGreenAverage);
+                    if (rawSignal.length > 60) rawSignal.shift();
 
-                    // 4. Gambar Kotak Indikator ROI warna hijau terang di layar web
+                    // --- IMPLEMENTASI DSP 1: MOVING AVERAGE FILTER (Pembersih Noise Kedipan) ---
+                    if (rawSignal.length >= filterWindowSize) {
+                        let sum = 0;
+                        for (let j = rawSignal.length - filterWindowSize; j < rawSignal.length; j++) {
+                            sum += rawSignal[j];
+                        }
+                        filteredSignal.push(sum / filterWindowSize);
+                        if (filteredSignal.length > 30) filteredSignal.shift();
+                    }
+
+                    // Gambar Indikator Grafis Box ROI
                     ctx.strokeStyle = '#2ecc71';
                     ctx.lineWidth = 3;
                     ctx.strokeRect(roiX, roiY, roiWidth, roiHeight);
-                    
-                    // Tulisan teks penanda ROI
                     ctx.fillStyle = '#2ecc71';
-                    ctx.font = '12px Arial';
-                    ctx.fillText("ROI JANTUNG", roiX, roiY - 5);
+                    ctx.font = 'bold 11px Arial';
+                    ctx.fillText("ROI PULSE SENSOR", roiX, roiY - 6);
 
-                    // 5. Hitung Estimasi BPM jika buffer data sudah terkumpul (~3 detik pertama)
-                    if (frameValues.length > 90) {
-                        bpmStatus.textContent = "Menganalisis fluktuasi rona sirkulasi darah...";
-                        heartIcon.classList.add('pulse-fast');
-                        
-                        // Deteksi puncak sinyal sederhana (Peak Detection) lokal
-                        let peaks = 0;
-                        for (let i = 1; i < frameValues.length - 1; i++) {
-                            if (frameValues[i] > frameValues[i - 1] && frameValues[i] > frameValues[i + 1]) {
-                                peaks++;
+                    // --- IMPLEMENTASI DSP 2: PEAK INTER-VALLEY DETECTION (Pengukur Akurat Jeda Detak) ---
+                    if (filteredSignal.length >= 3) {
+                        let idx = filteredSignal.length - 2;
+                        // Mendeteksi Lembah Sinyal (di mana absorbsi cahaya mencapai puncak kapiler darah penuh)
+                        if (filteredSignal[idx] < filteredSignal[idx - 1] && filteredSignal[idx] < filteredSignal[idx + 1]) {
+                            let currentTime = Date.now();
+                            let timeDiff = currentTime - lastPeakTime;
+
+                            // Filter Fisiologis: Denyut jantung manusia normal berjarak antara 450ms (133 BPM) hingga 1200ms (50 BPM)
+                            if (timeDiff >= 450 && timeDiff <= 1200) {
+                                let instantBpm = Math.round(60000 / timeDiff);
+                                bpmsList.push(instantBpm);
+                                if (bpmsList.length > 8) bpmsList.shift(); // Window rata-rata bergerak hasil ukur
+
+                                // Hitung rata-rata denyut real-time dari riwayat interval asli
+                                let finalBpm = Math.round(bpmsList.reduce((a, b) => a + b, 0) / bpmsList.length);
+                                
+                                bpmValueDisplay.innerHTML = `${finalBpm} <span style="font-size: 1.5rem; color: #888;">BPM</span>`;
+                                heartIcon.classList.add('pulse-fast');
+                                setTimeout(() => heartIcon.classList.remove('pulse-fast'), 200);
                             }
+                            lastPeakTime = currentTime;
                         }
-                        
-                        // Konversi frekuensi puncak menjadi nilai BPM berkisar di ambang batas normal jantung manusia (60 - 100)
-                        let estimatedBpm = Math.round((peaks / (frameValues.length / 30)) * 60);
-                        if(estimatedBpm < 60 || estimatedBpm > 110) {
-                            estimatedBpm = Math.floor(Math.random() * (85 - 70 + 1)) + 70; // Filter penstabil jika noise tinggi
-                        }
-                        
-                        bpmValueDisplay.innerHTML = `${estimatedBpm} <span style="font-size: 1.5rem; color: #888;">BPM</span>`;
-                    } else {
-                        bpmStatus.textContent = `Mengumpulkan sampel fotopletismografi... (${Math.round((frameValues.length/90)*100)}%)`;
                     }
 
-                }, 1000 / 30); // Berjalan di kecepatan ~30 FPS
+                    // Tampilkan status pengumpulan sampel data
+                    if (bpmsList.length === 0) {
+                        bpmStatus.textContent = "Mengkalibrasi sinyal fotopletismografi kulit...";
+                    } else if (bpmsList.length < 5) {
+                        bpmStatus.textContent = "Menstabilkan frekuensi pembuluh darah...";
+                    } else {
+                        bpmStatus.textContent = "Sinyal Terkunci. Mengukur fluktuasi kapiler secara real-time.";
+                    }
+
+                }, 1000 / 30); // Loop 30 FPS
             };
 
         } catch (err) {
-            console.error("Gagal mengakses kamera:", err);
-            bpmStatus.textContent = "Gagal mengakses kamera. Pastikan izin kamera diaktifkan.";
+            console.error("Gagal membuka kamera:", err);
+            bpmStatus.textContent = "Izin kamera ditolak atau perangkat tidak ditemukan.";
         }
     };
 }
@@ -291,9 +304,8 @@ function initHeartRateMonitor() {
 // Initialize Page Mechanics
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
-    initHeartRateMonitor(); // Aktifkan engine BPM CV
+    initHeartRateMonitor();
     
-    // Smooth scrolling & active section tracker
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.sidebar-nav a');
     
@@ -316,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetSection = document.querySelector(this.getAttribute('href'));
-            window.scrollTo({ top: targetSection.offsetTop, behavior: 'smooth' });
+            if(targetSection) window.scrollTo({ top: targetSection.offsetTop, behavior: 'smooth' });
         });
     });
 
