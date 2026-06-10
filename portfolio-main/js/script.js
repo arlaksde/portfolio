@@ -125,11 +125,21 @@ function renderProjects(data) {
     projectsGrid.innerHTML = ''; // Clear prior entries
     
     data.forEach(project => {
+        // Buat elemen tag teknologi secara dinamis jika ada
+        let techTagsHTML = '';
+        if (project.techStack) {
+            techTagsHTML = `<div class="project-tags" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0;">`;
+            project.techStack.forEach(tech => {
+                techTagsHTML += `<span class="tech-tag" style="background: rgba(52, 152, 219, 0.1); color: var(--primary-color); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 500;">${tech}</span>`;
+            });
+            techTagsHTML += `</div>`;
+        }
+
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card';
         projectCard.innerHTML = `
             <div class="project-image">
-                <img src="${project.image}" alt="${project.title}">
+                <img src="${project.image ? project.image : 'images/default-project.png'}" alt="${project.title}" onerror="this.src='https://placehold.co/600x400?text=No+Image'">
             </div>
             <div class="project-info">
                 <h3>${project.title}</h3>
@@ -139,8 +149,12 @@ function renderProjects(data) {
                     ${project.partner ? `<span><i class="fas fa-users"></i> ${project.partner}</span>` : ''}
                     ${project.role ? `<span><i class="fas fa-user-tie"></i> ${project.role}</span>` : ''}
                 </div>
+                ${techTagsHTML}
                 <p>${project.description}</p>
-                ${project.link ? `<a href="${project.link}" class="project-link" target="_blank" rel="noopener noreferrer">View Project <i class="fas fa-external-link-alt"></i></a>` : ''}
+                <div class="project-links-container" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    ${project.link ? `<a href="${project.link}" class="project-link" style="margin-top:0;" target="_blank" rel="noopener noreferrer">View Code <i class="fas fa-code"></i></a>` : ''}
+                    ${project.video ? `<a href="${project.video}" class="project-link" style="margin-top:0; color: var(--accent-color);" target="_blank" rel="noopener noreferrer">Watch Demo <i class="fas fa-play-circle"></i></a>` : ''}
+                </div>
             </div>
         `;
         projectsGrid.appendChild(projectCard);
