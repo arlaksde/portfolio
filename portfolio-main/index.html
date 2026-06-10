@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arlaksde - Portfolio</title>
+    <title>Arlaksde - Engineering Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -43,9 +43,9 @@
 					</a>
 				</li>
 				<li>
-					<a href="#heart-monitor" data-tooltip="BPM Monitor">
-						<i class="fas fa-heartbeat"></i>
-						<span class="nav-text">BPM Monitor</span>
+					<a href="#face-analysis" data-tooltip="Face AI">
+						<i class="fas fa-smile-beam"></i>
+						<span class="nav-text">Face AI</span>
 					</a>
 				</li>
 			</ul>
@@ -107,25 +107,101 @@
             </div>
         </section>
 
-        <section id="heart-monitor" class="section">
+        <section id="face-analysis" class="section">
             <div class="container">
-                <h2>Live Heart Rate (BPM) Monitor</h2>
-                <p style="text-align: center; margin-bottom: 1.5rem; color: #666;">
-                    Fitur berbasis Computer Vision untuk mengestimasi detak jantung (rPPG) melalui perubahan rona sirkulasi darah pada area dahi/pipi (ROI).
+                <h2>Real-Time Facial Expression Analysis</h2>
+                <p style="text-align: center; margin-bottom: 2.5rem; color: #b0c4de; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    Sistem Computer Vision berbasis web murni untuk mendeteksi koordinat wajah, mengekstrak geometri fitur lokal, dan mengklasifikasikan ekspresi emosi secara real-time.
                 </p>
-                <div class="bpm-container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: center;">
-                    <div class="video-box" style="position: relative; background: #000; border-radius: 8px; overflow: hidden; width: 100%; max-width: 480px; aspect-ratio: 4/3;">
-                        <video id="webcam" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
-                        <canvas id="roi-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                
+                <div class="face-ai-grid">
+                    <div class="face-ai-left">
+                        <div class="glass-card camera-card" id="main-camera-card">
+                            <div class="camera-header">
+                                <span class="status-badge" id="camera-status-badge"><i class="fas fa-video-slash"></i> Camera Standby</span>
+                                <span class="fps-counter" id="fps-display">FPS: 0</span>
+                            </div>
+                            <div class="webcam-viewport">
+                                <video id="webcam" autoplay playsinline muted></video>
+                                <canvas id="detection-canvas"></canvas>
+                                <div class="vision-overlay-msg" id="overlay-message">Klik Tombol Di Bawah Untuk Memulai</div>
+                            </div>
+                            <div class="camera-controls">
+                                <button id="toggle-camera-btn" class="action-btn-primary">
+                                    <i class="fas fa-power-off"></i> Inisialisasi Kamera
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-card expression-output-card" id="output-glow-card">
+                            <h3>Current Expression Analysis</h3>
+                            <div class="main-expression-display">
+                                <div class="expression-emoji" id="current-emoji">😐</div>
+                                <div class="expression-details">
+                                    <h4 id="current-label">Searching Face</h4>
+                                    <p>Confidence Rate</p>
+                                    <div class="confidence-container">
+                                        <div class="confidence-bar-bg">
+                                            <div class="confidence-bar-fill" id="current-confidence-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="confidence-text" id="current-confidence-text">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bpm-display-panel" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; min-width: 250px;">
-                        <i class="fas fa-heartbeat" id="heart-icon" style="font-size: 3rem; color: #e74c3c; margin-bottom: 1rem;"></i>
-                        <h3 style="color: var(--secondary-color);">Heart Rate</h3>
-                        <div id="bpm-value" style="font-size: 3.5rem; font-weight: bold; color: #2c3e50; margin: 0.5rem 0;">-- <span style="font-size: 1.5rem; color: #888;">BPM</span></div>
-                        <p id="bpm-status" style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 1.5rem;">Kamera Mati</p>
-                        <button id="start-bpm-btn" class="cv-download-btn" style="width: 100%; border-radius: 4px; height: 45px; background: var(--primary-color); color: white; border: none; font-weight: bold; cursor: pointer;">
-                            Aktifkan Kamera
-                        </button>
+
+                    <div class="face-ai-right">
+                        <div class="glass-card stats-sub-card">
+                            <h3><i class="fas fa-tachometer-alt"></i> Real-Time Dashboard</h3>
+                            <div class="metrics-grid">
+                                <div class="metric-item">
+                                    <span class="metric-label">Face Width</span>
+                                    <span class="metric-value" id="dash-face-w">0 px</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Face Height</span>
+                                    <span class="metric-value" id="dash-face-h">0 px</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Center X</span>
+                                    <span class="metric-value" id="dash-center-x">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Center Y</span>
+                                    <span class="metric-value" id="dash-center-y">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card stats-sub-card">
+                            <h3><i class="fas fa-chart-pie"></i> Statistics Panel</h3>
+                            <div class="metrics-list">
+                                <div class="list-metric-item">
+                                    <span>Most Frequent Expression</span>
+                                    <strong id="stat-most-freq">-</strong>
+                                </div>
+                                <div class="list-metric-item">
+                                    <span>Detection Runtime</span>
+                                    <strong id="stat-runtime">0.00 s</strong>
+                                </div>
+                                <div class="list-metric-item">
+                                    <span>Total Frames Processed</span>
+                                    <strong id="stat-total-frames">0</strong>
+                                </div>
+                                <div class="list-metric-item">
+                                    <span>Average Confidence</span>
+                                    <strong id="stat-avg-confidence">0.0%</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card history-card">
+                            <h3><i class="fas fa-history"></i> Expression History (Latest 20)</h3>
+                            <div class="history-list-wrapper" id="history-log-container">
+                                <div class="history-empty-state">Belum ada data masuk. Aktifkan kamera untuk memulai analisis.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -135,9 +211,8 @@
     <div id="preview-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h3 id="modal-title" style="margin-bottom: 1rem; color: var(--secondary-color);">Pratinjau</h3>
-            <div id="modal-body" style="width: 100%; height: calc(100% - 40px); overflow: auto;">
-                </div>
+            <h3 id="modal-title" style="margin-bottom: 1rem; color: #ffffff;">Pratinjau</h3>
+            <div id="modal-body" style="width: 100%; height: calc(100% - 40px); overflow: auto;"></div>
         </div>
     </div>
 
