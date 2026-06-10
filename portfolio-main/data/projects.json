@@ -4,7 +4,7 @@
     "year": "2025",
     "partner": "Riffatunnisa Fauziah Hanum",
     "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.",
-    "image": "images/janji.jpg",
+    "image": "images/janji.jpeg",
     "video": "https://canva.link/n6txybiqv1ozvpk",
     "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"]
   },
