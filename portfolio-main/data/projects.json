@@ -1,62 +1,86 @@
 [
-    {
-        "title": "Sistem Janji Temu Dosen dan Mahasiswa",
-        "year": "2025",
-        "partner": "Riffatunnisa Fauziah Hanum",
-        "description": "create a website for a lecturer attendance monitoring system"
-    },
-     {
-        "title": "Smart Aquaculture System",
-        "year": "2025",
-        "description": "Building an Internet of Things (IoT) system to automate aquarium maintenance, reduce stress for users, and create an optimal stable aquatic environment for aquatic life "
-    },
-    {
-        "title": "smart home security with arduino uno",
-        "year": "2022",
-        "role": "Lead Engineer",
-        "description": "create a prototype of iot based home security with node mcu"
-
-    },
-    {
-        "title": "cigarette rolling machine",
-        "year": "2022",
-        "partner": "freelance vendors",
-        "role": "technician assistant",
-        "description": "making machine automation with plc and assembling star delta motor."
-    },
-    {
-        "title": "conveyor automation with PLC",
-        "year": "2022",
-        "partner": "freelance vendors",
-        "role": "Programmer PLC",
-        "description": "create machine automation with PLC"
-    },
-	{
-        "title": "soil moisture monitoring system using soil moisture",
-        "year": "2022",
-        "partner": "Bandung Institute of Technology.",
-        "role": "Project Lead",
-        "description": "assembling analog circuits"
-    },
-    {
-        "title": "online attendance using rfid",
-        "year": "2022",
-        "partner": "Clean Water Initiative",
-        "role": "Lead Engineer",
-        "description": "Developed a portable, solar-powered water purification system for rural communities. Achieved 99.9% purification efficiency."
-
-    },
-	{
-        "title": "stamping machine with pneumatic integrated with PLC",
-        "year": "2022",
-        "description": "making a prototype stamping machine with pneumatic and plc"
-
-    },
-	{
-        "title": "smart door lock system for bank security system",
-        "year": "2022",
-        "partner": "freelance vendors",
-        "role": "technician assistant",
-        "description": "create a security system for bank safes with infrared sensors and touch sensors"
-    }
+  {
+    "title": "Sistem Janji Temu Dosen dan Mahasiswa",
+    "year": "2025",
+    "partner": "Riffatunnisa Fauziah Hanum",
+    "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.",
+    "image": "images/skripsi.jpg",
+    "video": "",
+    "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"]
+  },
+  {
+    "title": "Smart Aquaculture System",
+    "year": "2025",
+    "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.",
+    "image": "images/aqua.jpeg",
+    "video": "",
+    "techStack": ["ESP32", "IoT", "Sensors", "Automation"]
+  },
+  {
+    "title": "Smart Home Security with Arduino Uno",
+    "year": "2022",
+    "role": "Lead Engineer",
+    "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.",
+    "image": "",
+    "video": "",
+    "techStack": ["Arduino Uno", "NodeMCU", "IoT", "Security Sensors"]
+  },
+  {
+    "title": "Cigarette Rolling Machine",
+    "year": "2022",
+    "partner": "Freelance Vendors",
+    "role": "Technician Assistant",
+    "description": "Melakukan otomatisasi mesin pelinting sigaret berbasis kendali PLC serta merakit sistem pengasutan motor star-delta untuk kebutuhan industri.",
+    "image": "",
+    "video": "",
+    "techStack": ["PLC", "Automation", "Electrical Wiring", "Star-Delta Motor"]
+  },
+  {
+    "title": "Conveyor Automation with PLC",
+    "year": "2022",
+    "partner": "Freelance Vendors",
+    "role": "Programmer PLC",
+    "description": "Merancang dan mengimplementasikan logika kontrol otomatisasi pada mesin konveyor industri menggunakan Programmable Logic Controller (PLC).",
+    "image": "",
+    "video": "",
+    "techStack": ["PLC Programming", "Industrial Automation", "Conveyor Systems"]
+  },
+  {
+    "title": "Soil Moisture Monitoring System",
+    "year": "2022",
+    "partner": "Bandung Institute of Technology",
+    "role": "Project Lead",
+    "description": "Merakit rangkaian analog dan mengonfigurasi jaringan sensor kelembaban tanah untuk meningkatkan akurasi data manajemen air secara real-time pada sistem pertanian presisi.",
+    "image": "images/itb.png",
+    "video": "",
+    "techStack": ["Analog Circuits", "Sensor Networks", "Precision Agriculture"]
+  },
+  {
+    "title": "Online Attendance Using RFID",
+    "year": "2022",
+    "partner": "Bandung Institute of Technology",
+    "role": "Lead Engineer",
+    "description": "Mengembangkan arsitektur sistem absensi online berbasis teknologi RFID untuk meningkatkan validitas data dan efisiensi manajemen kehadiran personel dalam organisasi.",
+    "image": "images/itb.png",
+    "video": "",
+    "techStack": ["RFID Technology", "Embedded Systems", "Digitalization"]
+  },
+  {
+    "title": "Stamping Machine with Pneumatic Integrated with PLC",
+    "year": "2022",
+    "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.",
+    "image": "images/project-pneumatic.jpg",
+    "video": "",
+    "techStack": ["Pneumatics", "PLC Integration", "Prototype Development"]
+  },
+  {
+    "title": "Smart Door Lock System for Bank Security System",
+    "year": "2022",
+    "partner": "Freelance Vendors",
+    "role": "Technician Assistant",
+    "description": "Membangun sistem keamanan berlapis untuk brankas bank memanfaatkan integrasi sensor inframerah (infrared) dan sensor sentuh (touch sensor).",
+    "image": "",
+    "video": "",
+    "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"]
+  }
 ]
