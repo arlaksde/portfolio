@@ -1,25 +1,23 @@
 [
-    {
-        "company": "Ruang Industri Indonesia",
-        "logo" : "images/image.png",
-        "position": "Engineering Intern",
-        "year": "02 March 2026 - 30 June 2026",
-        "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi as the central on-premise"
-    },
-    {
-        "company": "Panasonic Manufacturing Indonesia-Internship",
-        "logo":"images/pmi.jpg",
-        "position": "interns",
-        "year": "20 May 2021 - 01 September 2021",
-        "description": "Production Line Optimization: Responsible for overseeing and implementing the aluminum coating process on technical components in the refrigeration department in accordance with global manufacturing quality standards."
-        
-    },
-    {
-        "company": "Bandung Institute of Technology",
-        "logo":"images/itb.png",
-        "position": "interns",
-        "year": "02 January 2021 - 29 March 2021",
-        "description": "Precision Agriculture Systems Research and Development: Designing and implementing a smart irrigation system based on soil moisture sensors to optimize the efficiency of water resource use. Monitoring System Integration: Calibrating sensors and programming automated control systems to ensure data accuracy in real-time soil moisture management. Personnel Management Digitalization: Developing an RFID-based attendance system architecture to improve data validity and efficiency of attendance management within the organization. Configured sensor networks to enhance data accuracy, resulting in improved system reliability and streamlined real-time monitoring capabilities."
-    }
-
+  {
+    "company": "Ruang Industri Indonesia",
+    "logo": "images/image.png",
+    "position": "Engineering Intern",
+    "year": "02 March 2026 - 30 June 2026",
+    "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi as the central on-premise."
+  },
+  {
+    "company": "Panasonic Manufacturing Indonesia-Internship",
+    "logo": "images/pmi.jpg",
+    "position": "interns",
+    "year": "20 May 2021 - 01 September 2021",
+    "description": "Production Line Optimization: Responsible for overseeing and implementing the aluminum coating process on technical components in the refrigeration department in accordance with global manufacturing quality standards."
+  },
+  {
+    "company": "Bandung Institute of Technology",
+    "logo": "images/itb.png",
+    "position": "interns",
+    "year": "02 January 2021 - 29 March 2021",
+    "description": "Precision Agriculture Systems Research and Development: Designing and implementing a smart irrigation system based on soil moisture sensors to optimize the efficiency of water resource use. Monitoring System Integration: Calibrating sensors and programming automated control systems to ensure data accuracy in real-time soil moisture management. Personnel Management Digitalization: Developing an RFID-based attendance system architecture to improve data validity and efficiency of attendance management within the organization. Configured sensor networks to enhance data accuracy, resulting in improved system reliability and streamlined real-time monitoring capabilities."
+  }
 ]
