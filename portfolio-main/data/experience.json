@@ -1,7 +1,7 @@
 [
     {
         "company": "Ruang Industri Indonesia",
-        "logo" : "images/image.png"
+        "logo" : "images/image.png",
         "position": "Engineering Intern",
         "year": "02 March 2026 - 30 June 2026",
         "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi as the central on-premise"
