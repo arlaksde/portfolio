@@ -1,11 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Preloader Logic
+    setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        preloader.style.opacity = '0';
+        setTimeout(() => preloader.style.display = 'none', 500);
+    }, 1000);
+
+    // Initialize AOS Animation
     AOS.init({ once: true, offset: 50, duration: 800 });
     document.getElementById("current-year").textContent = new Date().getFullYear();
 
-    // 1. DATA PROFILE
+    // 2. DATA PROFILE
     const profileData = {
         "name": "Arya Laksmana Dewanata",
-        "description": "dedicated to the world of electronics for approximately 7 years, has completed several projects, from industrial projects to home projects",
+        "description": "Dedicated to the world of electronics for approximately 7 years, has completed several projects, from industrial automation to smart home integrations.",
         "profileImage": "images/AryaLaksmanaDewanata_JasAlmet1.png",
         "email": "arlaksde@gmail.com",
         "phone": "+62 857-0153-1222",
@@ -13,7 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
             { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/arya-laksmana-dewanata-530934251", "icon": "fab fa-linkedin-in" },
             { "platform": "GitHub", "url": "https://github.com/arlaksde", "icon": "fab fa-github" }
         ],
-        "cv": { "file": "docs/cv2.pdf" },
+        // CV diubah menjadi kosong untuk menonaktifkan klik sementara
+        "cv": { "file": "" },
         "skills": [
             {"name": "Internet of Things", "icon": "fas fa-wifi"},
             {"name": "Hardware Programming", "icon": "fas fa-microchip"},
@@ -33,17 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("profile-email").textContent = profileData.email;
     document.getElementById("profile-phone").textContent = profileData.phone;
-    document.getElementById("cv-download").href = profileData.cv.file;
 
+    // Render Social Links (Memasukkan ikon Github, LinkedIn ke container yang sama dengan CV)
     const socialLinksContainer = document.getElementById("social-links");
     profileData.socialMedia.forEach(social => {
         const a = document.createElement("a");
         a.href = social.url;
         a.target = "_blank";
         a.innerHTML = `<i class="${social.icon}"></i>`;
-        socialLinksContainer.appendChild(a);
+        // Insert before the CV button to keep CV at the end
+        socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
     });
 
+    // Handle CV Click (Nonaktif sementara)
+    const cvBtn = document.getElementById("cv-download");
+    cvBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        alert("My CV is currently being updated. Please check back later!");
+    });
+
+    // Render Skills
     const skillsGrid = document.getElementById("skills-grid");
     profileData.skills.forEach(skill => {
         const skillDiv = document.createElement("div");
@@ -52,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         skillsGrid.appendChild(skillDiv);
     });
 
-    // 2. DATA EDUCATION
+    // 3. DATA EDUCATION
     const educationData = [
         { "university": "Polytechnic State of Semarang", "logo": "images/polines-logo.png", "major": "Bachelor of Electronic Engineering Technology", "year": "2022 - Now", "description": "GPA 3.6 of 4.0" },
         { "university": "SMK Negeri 1 Semarang", "logo": "images/smk-logo.jpg", "major": "Industrial Electronics Engineering", "year": "2019 - 2022", "description": "Point Average 85 of 100" }
@@ -78,11 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
         eduList.appendChild(eduCard);
     });
 
-    // 3. DATA EXPERIENCE
+    // 4. DATA EXPERIENCE
     const experienceData = [
         { "company": "Ruang Industri Indonesia", "logo": "images/image.png", "position": "Engineering Intern", "year": "02 March 2026 - 30 June 2026", "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi as the central on-premise." },
         { "company": "Panasonic Manufacturing Indonesia-Internship", "logo": "images/pmi.jpg", "position": "interns", "year": "20 May 2021 - 01 September 2021", "description": "Production Line Optimization: Responsible for overseeing and implementing the aluminum coating process on technical components in the refrigeration department in accordance with global manufacturing quality standards." },
-        { "company": "Bandung Institute of Technology", "logo": "images/itb.png", "position": "interns", "year": "02 January 2021 - 29 March 2021", "description": "Precision Agriculture Systems Research and Development: Designing and implementing a smart irrigation system based on soil moisture sensors to optimize the efficiency of water resource use. Monitoring System Integration: Calibrating sensors and programming automated control systems to ensure data accuracy in real-time soil moisture management. Personnel Management Digitalization: Developing an RFID-based attendance system architecture to improve data validity and efficiency of attendance management within the organization. Configured sensor networks to enhance data accuracy, resulting in improved system reliability and streamlined real-time monitoring capabilities." }
+        { "company": "Bandung Institute of Technology", "logo": "images/itb.png", "position": "interns", "year": "02 January 2021 - 29 March 2021", "description": "Precision Agriculture Systems Research and Development: Designing and implementing a smart irrigation system based on soil moisture sensors to optimize the efficiency of water resource use. Monitoring System Integration: Calibrating sensors and programming automated control systems to ensure data accuracy in real-time soil moisture management. Personnel Management Digitalization: Developing an RFID-based attendance system architecture to improve data validity and efficiency of attendance management within the organization." }
     ];
 
     const expList = document.getElementById("experience-list");
@@ -105,59 +123,73 @@ document.addEventListener("DOMContentLoaded", () => {
         expList.appendChild(expCard);
     });
 
-    // 4. DATA PROJECTS
+    // 5. DATA PROJECTS (Dengan Kategori Filter & Peran yang sudah diperbarui)
     const projectsData = [
-        { "title": "Sistem Janji Temu Dosen dan Mahasiswa", "year": "2025", "partner": "Riffatunnisa Fauziah Hanum", "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.", "image": "images/janji.jpeg", "video": "https://canva.link/n6txybiqv1ozvpk", "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"] },
-        { "title": "Smart Aquaculture System", "year": "2025", "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.", "image": "images/aquac.jpeg", "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96", "techStack": ["ESP32", "IoT", "Sensors", "Automation"] },
-        { "title": "Smart Home Security with Arduino Uno", "year": "2022", "role": "Lead Engineer", "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.", "image": "", "video": "", "techStack": ["Arduino Uno", "NodeMCU", "IoT", "Security Sensors"] },
-        { "title": "Cigarette Rolling Machine", "year": "2022", "partner": "Freelance Vendors", "role": "Technician Assistant", "description": "Melakukan otomatisasi mesin pelinting sigaret berbasis kendali PLC serta merakit sistem pengasutan motor star-delta untuk kebutuhan industri.", "image": "", "video": "", "techStack": ["PLC", "Automation", "Electrical Wiring", "Star-Delta Motor"] },
-        { "title": "Conveyor Automation with PLC", "year": "2022", "partner": "Freelance Vendors", "role": "Programmer PLC", "description": "Merancang dan mengimplementasikan logika kontrol otomatisasi pada mesin konveyor industri menggunakan Programmable Logic Controller (PLC).", "image": "", "video": "", "techStack": ["PLC Programming", "Industrial Automation", "Conveyor Systems"] },
-        { "title": "Soil Moisture Monitoring System", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Project Lead", "description": "Merakit rangkaian analog dan mengonfigurasi jaringan sensor kelembaban tanah untuk meningkatkan akurasi data manajemen air secara real-time pada sistem pertanian presisi.", "image": "images/itb.png", "video": "", "techStack": ["Analog Circuits", "Sensor Networks", "Precision Agriculture"] },
-        { "title": "Online Attendance Using RFID", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Lead Engineer", "description": "Mengembangkan arsitektur sistem absensi online berbasis teknologi RFID untuk meningkatkan validitas data dan efisiensi manajemen kehadiran personel dalam organisasi.", "image": "images/itb.png", "video": "", "techStack": ["RFID Technology", "Embedded Systems", "Digitalization"] },
-        { "title": "Stamping Machine with Pneumatic Integrated with PLC", "year": "2022", "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.", "image": "images/project-pneumatic.jpg", "video": "", "techStack": ["Pneumatics", "PLC Integration", "Prototype Development"] },
-        { "title": "Smart Door Lock System for Bank Security System", "year": "2022", "partner": "Freelance Vendors", "role": "Technician Assistant", "description": "Membangun sistem keamanan berlapis untuk brankas bank memanfaatkan integrasi sensor inframerah (infrared) dan sensor sentuh (touch sensor).", "image": "", "video": "", "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"] }
+        { "title": "Sistem Janji Temu Dosen dan Mahasiswa", "category": "web", "year": "2025", "partner": "Riffatunnisa Fauziah Hanum", "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.", "image": "images/janji.jpeg", "video": "https://canva.link/n6txybiqv1ozvpk", "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"] },
+        { "title": "Smart Aquaculture System", "category": "iot", "year": "2025", "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.", "image": "images/aquac.jpeg", "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96", "techStack": ["ESP32", "IoT", "Sensors", "Automation"] },
+        { "title": "Smart Home Security with Arduino Uno", "category": "iot", "year": "2022", "role": "Project Leader", "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.", "image": "", "video": "", "techStack": ["Arduino Uno", "NodeMCU", "IoT", "Security Sensors"] },
+        { "title": "Cigarette Rolling Machine", "category": "automation", "year": "2022", "partner": "Private Industry Client", "role": "Technical Assistant", "description": "Melakukan otomatisasi mesin pelinting sigaret berbasis kendali PLC serta merakit sistem pengasutan motor star-delta untuk kebutuhan industri.", "image": "", "video": "", "techStack": ["PLC", "Automation", "Electrical Wiring", "Star-Delta Motor"] },
+        { "title": "Conveyor Automation with PLC", "category": "automation", "year": "2022", "partner": "Private Industry Client", "role": "Independent Automation Technician", "description": "Merancang dan mengimplementasikan logika kontrol otomatisasi pada mesin konveyor industri menggunakan Programmable Logic Controller (PLC).", "image": "", "video": "", "techStack": ["PLC Programming", "Industrial Automation", "Conveyor Systems"] },
+        { "title": "Soil Moisture Monitoring System", "category": "iot", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Project Leader", "description": "Merakit rangkaian analog dan mengonfigurasi jaringan sensor kelembaban tanah untuk meningkatkan akurasi data manajemen air secara real-time pada sistem pertanian presisi.", "image": "images/itb.png", "video": "", "techStack": ["Analog Circuits", "Sensor Networks", "Precision Agriculture"] },
+        { "title": "Online Attendance Using RFID", "category": "iot", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Project Leader", "description": "Mengembangkan arsitektur sistem absensi online berbasis teknologi RFID untuk meningkatkan validitas data dan efisiensi manajemen kehadiran personel dalam organisasi.", "image": "images/itb.png", "video": "", "techStack": ["RFID Technology", "Embedded Systems", "Digitalization"] },
+        { "title": "Stamping Machine with Pneumatic Integrated with PLC", "category": "automation", "year": "2022", "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.", "image": "images/project-pneumatic.jpg", "video": "", "techStack": ["Pneumatics", "PLC Integration", "Prototype Development"] },
+        { "title": "Smart Door Lock System for Bank Security", "category": "iot", "year": "2022", "partner": "Private Industry Client", "role": "Technical Assistant", "description": "Membangun sistem keamanan berlapis untuk brankas bank memanfaatkan integrasi sensor inframerah (infrared) dan sensor sentuh (touch sensor).", "image": "", "video": "", "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"] }
     ];
 
     const projectsGrid = document.getElementById("projects-grid");
-    projectsData.forEach((project, index) => {
-        const imageElement = project.image && project.image !== "" 
-            ? `<img src="${project.image}" alt="${project.title}" onerror="this.outerHTML='<div class=\\'project-placeholder\\'><i class=\\'fas fa-microchip\\'></i></div>'">` 
-            : `<div class="project-placeholder"><i class="fas fa-microchip"></i></div>`;
+    
+    function renderProjects(filterCategory) {
+        projectsGrid.innerHTML = '';
+        const filteredProjects = filterCategory === 'all' 
+            ? projectsData 
+            : projectsData.filter(p => p.category === filterCategory);
 
-        let techStackHTML = '';
-        if(project.techStack && project.techStack.length > 0) {
-            techStackHTML = `<div class="tech-stack-container">
-                ${project.techStack.map(tech => `<span class="tech-badge">${tech}</span>`).join('')}
-            </div>`;
-        }
-        
-        // Memunculkan Role, Partner, dan Video jika ada
-        let roleHTML = project.role ? `<span><i class="fas fa-user-tag"></i> ${project.role}</span>` : '';
-        let partnerHTML = project.partner ? `<span><i class="fas fa-users"></i> ${project.partner}</span>` : '';
-        let videoHTML = project.video && project.video !== "" ? `<a href="${project.video}" target="_blank" class="demo-btn"><i class="fas fa-play-circle"></i> Watch Demo</a>` : '';
+        filteredProjects.forEach((project, index) => {
+            const imageElement = project.image && project.image !== "" 
+                ? `<img src="${project.image}" alt="${project.title}" onerror="this.outerHTML='<div class=\\'project-placeholder\\'><i class=\\'fas fa-microchip\\'></i></div>'">` 
+                : `<div class="project-placeholder"><i class="fas fa-microchip"></i></div>`;
 
-        const projectCard = document.createElement("div");
-        projectCard.className = "project-card glass-card";
-        projectCard.setAttribute("data-aos", "zoom-in-up");
-        projectCard.setAttribute("data-aos-delay", (index % 3) * 100);
-        projectCard.innerHTML = `
-            <div class="project-image">${imageElement}</div>
-            <div class="project-info">
-                <h3>${project.title}</h3>
-                <div class="project-meta">
-                    <span><i class="far fa-calendar-alt"></i> ${project.year}</span>
-                    ${roleHTML}
-                    ${partnerHTML}
+            let techStackHTML = project.techStack ? `<div class="tech-stack-container">${project.techStack.map(tech => `<span class="tech-badge">${tech}</span>`).join('')}</div>` : '';
+            let roleHTML = project.role ? `<span><i class="fas fa-user-tag"></i> ${project.role}</span>` : '';
+            let partnerHTML = project.partner ? `<span><i class="fas fa-building"></i> ${project.partner}</span>` : '';
+            let videoHTML = project.video && project.video !== "" ? `<a href="${project.video}" target="_blank" class="demo-btn"><i class="fas fa-play-circle"></i> Watch Demo</a>` : '';
+
+            const projectCard = document.createElement("div");
+            projectCard.className = "project-card glass-card";
+            projectCard.setAttribute("data-aos", "zoom-in-up");
+            projectCard.setAttribute("data-aos-delay", (index % 3) * 100);
+            projectCard.innerHTML = `
+                <div class="project-image">${imageElement}</div>
+                <div class="project-info">
+                    <h3>${project.title}</h3>
+                    <div class="project-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${project.year}</span>
+                        ${roleHTML}
+                        ${partnerHTML}
+                    </div>
+                    <p class="project-desc">${project.description}</p>
+                    ${videoHTML}
+                    ${techStackHTML}
                 </div>
-                <p class="project-desc">${project.description}</p>
-                ${videoHTML}
-                ${techStackHTML}
-            </div>
-        `;
-        projectsGrid.appendChild(projectCard);
+            `;
+            projectsGrid.appendChild(projectCard);
+        });
+        AOS.refresh();
+    }
+
+    renderProjects('all'); // Initial render
+
+    // Filter Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProjects(btn.getAttribute('data-filter'));
+        });
     });
 
-    // 5. DATA CERTIFICATES
+    // 6. DATA CERTIFICATES
     const certificatesData = [
         { "title": "Certification: Scaling Digitalization with Edge-as-a-Service", "issuer": "Advantech IoT Academy", "logo": "images/advantech.png", "year": "21 December 2025", "description": "Certified Basic credential for successfully completing the course on scaling digitalization frameworks utilizing Edge-as-a-Service (EaaS) solutions.", "link": "https://drive.google.com/drive/folders/12_A8RtBY9SdBq8furuJCre6m8eg6_A6k?usp=sharing" },
         { "title": "WISE-4000 LAN Wireless I/O Module Series - Basic", "issuer": "Advantech IoT Academy", "logo": "images/advantech.png", "year": "21 December 2025", "description": "Certified training program focusing on configuration, data acquisition, and implementation of WISE-4000LAN Wireless I/O Module networks.", "link": "https://drive.google.com/drive/folders/12_A8RtBY9SdBq8furuJCre6m8eg6_A6k?usp=sharing" },
@@ -184,5 +216,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <a href="${cert.link}" target="_blank" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-external-link-alt"></i> View Certificate</a>
         `;
         certList.appendChild(certCard);
+    });
+
+    // 7. Scroll to Top Logic
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add("show");
+        } else {
+            scrollTopBtn.classList.remove("show");
+        }
+    });
+    scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 });
