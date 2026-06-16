@@ -1,15 +1,17 @@
 [
   {
     "title": "Sistem Janji Temu Dosen dan Mahasiswa",
+    "category": ["web", "iot"],
     "year": "2025",
     "partner": "Riffatunnisa Fauziah Hanum",
     "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.",
     "image": "images/janji.jpeg",
     "video": "https://canva.link/n6txybiqv1ozvpk",
-    "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"]
+    "techStack": ["Face Recognition", "Web App", "IoT", "Flask", "Whatsapp-Web.js"]
   },
   {
     "title": "Smart Aquaculture System",
+    "category": ["iot", "web"],
     "year": "2025",
     "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.",
     "image": "images/aquac.jpeg",
@@ -18,6 +20,7 @@
   },
   {
     "title": "Smart Home Security with Arduino Uno",
+    "category": ["iot"],
     "year": "2022",
     "role": "Team Lead",
     "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.",
@@ -27,6 +30,7 @@
   },
   {
     "title": "Cigarette Rolling Machine",
+    "category": ["automation"],
     "year": "2022",
     "partner": "Freelance",
     "role": "Assistant Technician",
@@ -37,6 +41,7 @@
   },
   {
     "title": "Conveyor Automation with PLC",
+    "category": ["automation"],
     "year": "2022",
     "partner": "Freelance",
     "role": "Freelance Control Systems Programmer",
@@ -47,6 +52,7 @@
   },
   {
     "title": "Soil Moisture Monitoring System",
+    "category": ["iot"],
     "year": "2022",
     "partner": "Bandung Institute of Technology",
     "role": "Intern Team Lead",
@@ -57,6 +63,7 @@
   },
   {
     "title": "Online Attendance Using RFID",
+    "category": ["iot", "web"],
     "year": "2022",
     "partner": "Bandung Institute of Technology",
     "role": "Intern Team Lead",
@@ -67,6 +74,7 @@
   },
   {
     "title": "Stamping Machine with Pneumatic Integrated with PLC",
+    "category": ["automation"],
     "year": "2022",
     "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.",
     "image": "images/project-pneumatic.jpg",
@@ -75,6 +83,7 @@
   },
   {
     "title": "Smart Door Lock System for Bank Security System",
+    "category": ["iot"],
     "year": "2022",
     "partner": "Freelance",
     "role": "Assistant Technician",
