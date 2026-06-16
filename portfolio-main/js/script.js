@@ -1,4 +1,3 @@
-// Variabel kategori untuk generate tombol otomatis
 const PROJECT_CATEGORIES = [
     { id: 'all', label: 'All Projects' },
     { id: 'iot', label: 'IoT & Hardware' },
@@ -8,50 +7,53 @@ const PROJECT_CATEGORIES = [
 
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Preloader Logic
-    setTimeout(() => {
+    function hidePreloader() {
         const preloader = document.getElementById('preloader');
         if (preloader) {
             preloader.style.opacity = '0';
             setTimeout(() => preloader.style.display = 'none', 500);
         }
-    }, 1000);
+    }
 
     AOS.init({ once: true, offset: 50, duration: 800 });
     document.getElementById("current-year").textContent = new Date().getFullYear();
 
-    // 2. FUNGSI FETCH SEMUA JSON
-    async function loadData() {
+    // 2. FUNGSI FETCH JSON (Sekarang nembak ke folder data/ sesuai struktur GitHub kamu)
+    async function fetchJson(url) {
         try {
-            const [profileRes, eduRes, expRes, projRes, certRes] = await Promise.all([
-                fetch('profile.json'),
-                fetch('education.json'),
-                fetch('experience.json'),
-                fetch('projects.json'),
-                fetch('certificates.json')
-            ]);
-
-            const profileData = await profileRes.json();
-            const educationData = await eduRes.json();
-            const experienceData = await expRes.json();
-            const projectsData = await projRes.json();
-            const certificatesData = await certRes.json();
-
-            renderProfile(profileData);
-            renderEducation(educationData);
-            renderExperience(experienceData);
-            renderProjects(projectsData);
-            renderCertificates(certificatesData);
-
-            AOS.refresh();
-        } catch (error) {
-            console.error("Gagal memuat JSON:", error);
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        } catch (e) {
+            console.error(`Gagal meload ${url}. Detail error:`, e);
+            return null; 
         }
+    }
+
+    async function loadData() {
+        // PERBAIKAN: Path diarahkan ke folder data/
+        const profileData = await fetchJson('data/profile.json');
+        const educationData = await fetchJson('data/education.json');
+        const experienceData = await fetchJson('data/experience.json');
+        const projectsData = await fetchJson('data/projects.json');
+        const certificatesData = await fetchJson('data/certificates.json');
+
+        // Render hanya jika datanya berhasil didapat
+        if (profileData) renderProfile(profileData);
+        if (educationData) renderEducation(educationData);
+        if (experienceData) renderExperience(experienceData);
+        if (projectsData) renderProjects(projectsData);
+        if (certificatesData) renderCertificates(certificatesData);
+
+        hidePreloader(); // Matikan loading screen
+        AOS.refresh();
     }
 
     loadData();
 
-    // 3. FUNGSI RENDER KE HTML
+    // 3. FUNGSI RENDER HTML
     function renderProfile(data) {
+        if(!data) return;
         document.getElementById("profile-name").textContent = data.name;
         document.getElementById("profile-description").textContent = data.description;
         
@@ -63,19 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("profile-phone").textContent = data.phone;
 
         const socialLinksContainer = document.getElementById("social-links");
-        data.socialMedia.forEach(social => {
-            let iconClass = 'fas fa-link';
-            if(social.platform.toLowerCase().includes('linkedin')) iconClass = 'fab fa-linkedin-in';
-            if(social.platform.toLowerCase().includes('github')) iconClass = 'fab fa-github';
+        if(data.socialMedia) {
+            data.socialMedia.forEach(social => {
+                let iconClass = 'fas fa-link';
+                if(social.platform.toLowerCase().includes('linkedin')) iconClass = 'fab fa-linkedin-in';
+                if(social.platform.toLowerCase().includes('github')) iconClass = 'fab fa-github';
 
-            let finalUrl = social.url.startsWith('http') ? social.url : 'https://' + social.url;
-
-            const a = document.createElement("a");
-            a.href = finalUrl;
-            a.target = "_blank";
-            a.innerHTML = `<i class="${iconClass}"></i>`;
-            socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
-        });
+                let finalUrl = social.url.startsWith('http') ? social.url : 'https://' + social.url;
+                const a = document.createElement("a");
+                a.href = finalUrl;
+                a.target = "_blank";
+                a.innerHTML = `<i class="${iconClass}"></i>`;
+                socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
+            });
+        }
 
         const cvBtn = document.getElementById("cv-download");
         if(data.cv && data.cv.file !== "") {
@@ -89,15 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const skillsGrid = document.getElementById("skills-grid");
-        data.skills.forEach(skill => {
-            const skillDiv = document.createElement("div");
-            skillDiv.className = "skill-item";
-            skillDiv.innerHTML = `<i class="${skill.icon} skill-icon"></i><span class="skill-name">${skill.name}</span>`;
-            skillsGrid.appendChild(skillDiv);
-        });
+        if(data.skills) {
+            data.skills.forEach(skill => {
+                const skillDiv = document.createElement("div");
+                skillDiv.className = "skill-item";
+                skillDiv.innerHTML = `<i class="${skill.icon} skill-icon"></i><span class="skill-name">${skill.name}</span>`;
+                skillsGrid.appendChild(skillDiv);
+            });
+        }
     }
 
     function renderEducation(data) {
+        if(!data) return;
         const eduList = document.getElementById("education-list");
         data.forEach((edu, idx) => {
             const eduCard = document.createElement("div");
@@ -120,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderExperience(data) {
+        if(!data) return;
         const expList = document.getElementById("experience-list");
         data.forEach((exp, idx) => {
             const expCard = document.createElement("div");
@@ -142,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderProjects(data) {
+        if(!data) return;
         const filterContainer = document.getElementById("filter-container");
         const projectsGrid = document.getElementById("projects-grid");
         
@@ -157,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
         function displayFilteredProjects(filterCategory) {
             projectsGrid.innerHTML = '';
             
-            // Baca array category dari file projects.json
             const filteredProjects = filterCategory === 'all' 
                 ? data 
                 : data.filter(p => p.category && p.category.includes(filterCategory));
@@ -208,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderCertificates(data) {
+        if(!data) return;
         const certList = document.getElementById("certificates-list");
         data.forEach((cert, idx) => {
             const certCard = document.createElement("div");
@@ -232,14 +240,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Scroll to Top Logic
     const scrollTopBtn = document.getElementById("scrollTopBtn");
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
-            scrollTopBtn.classList.add("show");
-        } else {
-            scrollTopBtn.classList.remove("show");
-        }
-    });
-    scrollTopBtn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    if(scrollTopBtn) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add("show");
+            } else {
+                scrollTopBtn.classList.remove("show");
+            }
+        });
+        scrollTopBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
 });
