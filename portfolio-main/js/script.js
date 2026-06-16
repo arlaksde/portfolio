@@ -1,3 +1,12 @@
+// VARIABEL GLOBAL UNTUK KATEGORI
+// Anda bisa menambah/mengubah kategori di sini kapan saja
+const PROJECT_CATEGORIES = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'iot', label: 'IoT & Hardware' },
+    { id: 'automation', label: 'Industrial Automation' },
+    { id: 'web', label: 'Web App' }
+];
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Preloader Logic
     setTimeout(() => {
@@ -21,8 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/arya-laksmana-dewanata-530934251", "icon": "fab fa-linkedin-in" },
             { "platform": "GitHub", "url": "https://github.com/arlaksde", "icon": "fab fa-github" }
         ],
-        // CV diubah menjadi kosong untuk menonaktifkan klik sementara
-        "cv": { "file": "" },
+        "cv": { "file": "" }, // Dikosongkan sementara sesuai permintaan
         "skills": [
             {"name": "Internet of Things", "icon": "fas fa-wifi"},
             {"name": "Hardware Programming", "icon": "fas fa-microchip"},
@@ -43,18 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("profile-email").textContent = profileData.email;
     document.getElementById("profile-phone").textContent = profileData.phone;
 
-    // Render Social Links (Memasukkan ikon Github, LinkedIn ke container yang sama dengan CV)
+    // Render Social Links
     const socialLinksContainer = document.getElementById("social-links");
     profileData.socialMedia.forEach(social => {
         const a = document.createElement("a");
         a.href = social.url;
         a.target = "_blank";
         a.innerHTML = `<i class="${social.icon}"></i>`;
-        // Insert before the CV button to keep CV at the end
         socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
     });
 
-    // Handle CV Click (Nonaktif sementara)
+    // Handle CV Click
     const cvBtn = document.getElementById("cv-download");
     cvBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -123,26 +130,39 @@ document.addEventListener("DOMContentLoaded", () => {
         expList.appendChild(expCard);
     });
 
-    // 5. DATA PROJECTS (Dengan Kategori Filter & Peran yang sudah diperbarui)
+    // 5. DATA PROJECTS (Dengan properti category ditambahkan ke masing-masing item)
     const projectsData = [
-        { "title": "Sistem Janji Temu Dosen dan Mahasiswa", "category": "web", "year": "2025", "partner": "Riffatunnisa Fauziah Hanum", "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.", "image": "images/janji.jpeg", "video": "https://canva.link/n6txybiqv1ozvpk", "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"] },
-        { "title": "Smart Aquaculture System", "category": "iot", "year": "2025", "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.", "image": "images/aquac.jpeg", "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96", "techStack": ["ESP32", "IoT", "Sensors", "Automation"] },
-        { "title": "Smart Home Security with Arduino Uno", "category": "iot", "year": "2022", "role": "Project Leader", "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.", "image": "", "video": "", "techStack": ["Arduino Uno", "NodeMCU", "IoT", "Security Sensors"] },
-        { "title": "Cigarette Rolling Machine", "category": "automation", "year": "2022", "partner": "Private Industry Client", "role": "Technical Assistant", "description": "Melakukan otomatisasi mesin pelinting sigaret berbasis kendali PLC serta merakit sistem pengasutan motor star-delta untuk kebutuhan industri.", "image": "", "video": "", "techStack": ["PLC", "Automation", "Electrical Wiring", "Star-Delta Motor"] },
-        { "title": "Conveyor Automation with PLC", "category": "automation", "year": "2022", "partner": "Private Industry Client", "role": "Independent Automation Technician", "description": "Merancang dan mengimplementasikan logika kontrol otomatisasi pada mesin konveyor industri menggunakan Programmable Logic Controller (PLC).", "image": "", "video": "", "techStack": ["PLC Programming", "Industrial Automation", "Conveyor Systems"] },
-        { "title": "Soil Moisture Monitoring System", "category": "iot", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Project Leader", "description": "Merakit rangkaian analog dan mengonfigurasi jaringan sensor kelembaban tanah untuk meningkatkan akurasi data manajemen air secara real-time pada sistem pertanian presisi.", "image": "images/itb.png", "video": "", "techStack": ["Analog Circuits", "Sensor Networks", "Precision Agriculture"] },
-        { "title": "Online Attendance Using RFID", "category": "iot", "year": "2022", "partner": "Bandung Institute of Technology", "role": "Project Leader", "description": "Mengembangkan arsitektur sistem absensi online berbasis teknologi RFID untuk meningkatkan validitas data dan efisiensi manajemen kehadiran personel dalam organisasi.", "image": "images/itb.png", "video": "", "techStack": ["RFID Technology", "Embedded Systems", "Digitalization"] },
-        { "title": "Stamping Machine with Pneumatic Integrated with PLC", "category": "automation", "year": "2022", "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.", "image": "images/project-pneumatic.jpg", "video": "", "techStack": ["Pneumatics", "PLC Integration", "Prototype Development"] },
-        { "title": "Smart Door Lock System for Bank Security", "category": "iot", "year": "2022", "partner": "Private Industry Client", "role": "Technical Assistant", "description": "Membangun sistem keamanan berlapis untuk brankas bank memanfaatkan integrasi sensor inframerah (infrared) dan sensor sentuh (touch sensor).", "image": "", "video": "", "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"] }
+        { "title": "Sistem Janji Temu Dosen dan Mahasiswa", "category": ["web", "iot"], "year": "2025", "partner": "Riffatunnisa Fauziah Hanum", "description": "Mengembangkan sistem informasi ketersediaan dosen dan manajemen janji temu berbasis face recognition, aplikasi web, dan perangkat IoT guna meningkatkan efisiensi komunikasi akademik.", "image": "images/janji.jpeg", "video": "https://canva.link/n6txybiqv1ozvpk", "techStack": ["Face Recognition", "Web App", "IoT", "Flask","Whatsapp-Web.js"] },
+        { "title": "Smart Aquaculture System", "category": ["iot", "web"], "year": "2025", "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.", "image": "images/aquac.jpeg", "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96", "techStack": ["ESP32", "IoT", "Sensors", "Automation"] },
+        { "title": "Smart Home Security with Arduino Uno", "category": ["iot"], "year": "2022", "role": "Team Lead", "description": "Membuat purwarupa sistem keamanan rumah berbasis IoT menggunakan NodeMCU dan Arduino Uno untuk monitoring keamanan lingkungan rumah secara nirkabel.", "image": "", "video": "", "techStack": ["Arduino Uno", "NodeMCU", "IoT", "Security Sensors"] },
+        { "title": "Cigarette Rolling Machine", "category": ["automation"], "year": "2022", "partner": "Freelance", "role": "Assistant Technician", "description": "Melakukan otomatisasi mesin pelinting sigaret berbasis kendali PLC serta merakit sistem pengasutan motor star-delta untuk kebutuhan industri.", "image": "", "video": "", "techStack": ["PLC", "Automation", "Electrical Wiring", "Star-Delta Motor"] },
+        { "title": "Conveyor Automation with PLC", "category": ["automation"], "year": "2022", "partner": "Freelance", "role": "Freelance Control Systems Programmer", "description": "Merancang dan mengimplementasikan logika kontrol otomatisasi pada mesin konveyor industri menggunakan Programmable Logic Controller (PLC).", "image": "", "video": "", "techStack": ["PLC Programming", "Industrial Automation", "Conveyor Systems"] },
+        { "title": "Soil Moisture Monitoring System", "category": ["iot"], "year": "2022", "partner": "Bandung Institute of Technology", "role": "Intern Team Lead", "description": "Merakit rangkaian analog dan mengonfigurasi jaringan sensor kelembaban tanah untuk meningkatkan akurasi data manajemen air secara real-time pada sistem pertanian presisi.", "image": "images/itb.png", "video": "", "techStack": ["Analog Circuits", "Sensor Networks", "Precision Agriculture"] },
+        { "title": "Online Attendance Using RFID", "category": ["iot", "web"], "year": "2022", "partner": "Bandung Institute of Technology", "role": "Intern Team Lead", "description": "Mengembangkan arsitektur sistem absensi online berbasis teknologi RFID untuk meningkatkan validitas data dan efisiensi manajemen kehadiran personel dalam organisasi.", "image": "images/itb.png", "video": "", "techStack": ["RFID Technology", "Embedded Systems", "Digitalization"] },
+        { "title": "Stamping Machine with Pneumatic Integrated with PLC", "category": ["automation"], "year": "2022", "description": "Membuat purwarupa mesin stamping otomatis yang mengintegrasikan aktuator pneumatik dengan logika kontrol berbasis PLC.", "image": "images/project-pneumatic.jpg", "video": "", "techStack": ["Pneumatics", "PLC Integration", "Prototype Development"] },
+        { "title": "Smart Door Lock System for Bank Security System", "category": ["iot"], "year": "2022", "partner": "Freelance", "role": "Assistant Technician", "description": "Membangun sistem keamanan berlapis untuk brankas bank memanfaatkan integrasi sensor inframerah (infrared) dan sensor sentuh (touch sensor).", "image": "", "video": "", "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"] }
     ];
 
+    const filterContainer = document.getElementById("filter-container");
     const projectsGrid = document.getElementById("projects-grid");
     
+    // GENERATE BUTTON FILTER SECARA DINAMIS
+    PROJECT_CATEGORIES.forEach(category => {
+        const btn = document.createElement("button");
+        btn.className = `filter-btn ${category.id === 'all' ? 'active' : ''}`;
+        btn.setAttribute("data-filter", category.id);
+        btn.textContent = category.label;
+        filterContainer.appendChild(btn);
+    });
+
+    // FUNGSI RENDER PROJECT
     function renderProjects(filterCategory) {
         projectsGrid.innerHTML = '';
+        
+        // Membaca array category di dalam JSON
         const filteredProjects = filterCategory === 'all' 
             ? projectsData 
-            : projectsData.filter(p => p.category === filterCategory);
+            : projectsData.filter(p => p.category && p.category.includes(filterCategory));
 
         filteredProjects.forEach((project, index) => {
             const imageElement = project.image && project.image !== "" 
@@ -174,12 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             projectsGrid.appendChild(projectCard);
         });
-        AOS.refresh();
+        AOS.refresh(); // Segarkan animasi setelah merender ulang elemen
     }
 
-    renderProjects('all'); // Initial render
+    renderProjects('all'); // Tampilkan semua di awal
 
-    // Filter Logic
+    // LOGIKA EVENT LISTENER UNTUK FILTER (Ditempel ke tombol yang baru di-generate)
     const filterBtns = document.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
