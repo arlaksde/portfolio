@@ -6,42 +6,24 @@
     <title>Arlaksde - Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="bg-animation">
+        <div class="color-sphere sphere-1"></div>
+        <div class="color-sphere sphere-2"></div>
+        <div class="color-sphere sphere-3"></div>
+    </div>
+
     <header>
         <nav class="sidebar-nav">
             <ul>
-                <li>
-                    <a href="#profile" data-tooltip="Profile">
-                        <i class="fas fa-user"></i>
-                        <span class="nav-text">Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#education" data-tooltip="Education">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span class="nav-text">Education</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#experience" data-tooltip="Experience">
-                        <i class="fas fa-briefcase"></i>
-                        <span class="nav-text">Experience</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#projects" data-tooltip="Projects">
-                        <i class="fas fa-code"></i>
-                        <span class="nav-text">Research & Projects</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#certificates" data-tooltip="Certificates">
-                        <i class="fas fa-certificate"></i>
-                        <span class="nav-text">Certificates</span>
-                    </a>
-                </li>
+                <li><a href="#profile" data-tooltip="Profile"><i class="fas fa-user"></i><span class="nav-text">Profile</span></a></li>
+                <li><a href="#education" data-tooltip="Education"><i class="fas fa-graduation-cap"></i><span class="nav-text">Education</span></a></li>
+                <li><a href="#experience" data-tooltip="Experience"><i class="fas fa-briefcase"></i><span class="nav-text">Experience</span></a></li>
+                <li><a href="#projects" data-tooltip="Projects"><i class="fas fa-code"></i><span class="nav-text">Research & Projects</span></a></li>
+                <li><a href="#certificates" data-tooltip="Certificates"><i class="fas fa-certificate"></i><span class="nav-text">Certificates</span></a></li>
             </ul>
         </nav>
     </header>
@@ -49,23 +31,21 @@
     <main>
         <section id="profile" class="section">
             <div class="container">
-                <div class="profile-content">
+                <div class="profile-content" data-aos="fade-up" data-aos-duration="1000">
                     <div class="profile-image-container">
                         <img id="profile-pic" src="" alt="Profile Picture" class="profile-image">
-                        <div class="profile-contact">
+                        <div class="profile-contact glass-card">
                             <p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
                             <p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
                             <div class="social-links" id="social-links"></div>
-                            <a href="#" id="cv-download" class="cv-download-btn" title="Download CV">
-                                <i class="fas fa-file-pdf"></i>
-                            </a>
+                            <a href="#" id="cv-download" class="cv-download-btn" title="Download CV"><i class="fas fa-file-pdf"></i></a>
                         </div>
                     </div>
                     <div class="profile-info">
-                        <h1 id="profile-name"></h1>
-                        <p id="profile-description"></p>
-                        <div class="skills-container" id="skills-container">
-                            <h3>Skills</h3>
+                        <h1 id="profile-name" class="gradient-text"></h1>
+                        <p id="profile-description" class="glass-card"></p>
+                        <div class="skills-container glass-card" id="skills-container" data-aos="fade-left" data-aos-delay="200">
+                            <h3><i class="fas fa-bolt"></i> Tech Stack & Skills</h3>
                             <div class="skills-grid" id="skills-grid"></div>
                         </div>
                     </div>
@@ -75,37 +55,38 @@
 
         <section id="education" class="section">
             <div class="container">
-                <h2>Education</h2>
+                <h2 class="gradient-text" data-aos="fade-down">Education</h2>
                 <div class="education-list" id="education-list"></div>
             </div>
         </section>
 
         <section id="experience" class="section">
             <div class="container">
-                <h2>Work Experience</h2>
+                <h2 class="gradient-text" data-aos="fade-down">Work Experience</h2>
                 <div class="experience-list" id="experience-list"></div>
             </div>
         </section>
 
         <section id="projects" class="section">
             <div class="container">
-                <h2>Research and Projects</h2>
+                <h2 class="gradient-text" data-aos="fade-down">Research and Projects</h2>
                 <div class="projects-grid" id="projects-grid"></div>
             </div>
         </section>
 
         <section id="certificates" class="section">
             <div class="container">
-                <h2>Certificates</h2>
+                <h2 class="gradient-text" data-aos="fade-down">Certificates</h2>
                 <div class="experience-list" id="certificates-list"></div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata</p>
+        <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata | Crafted with <i class="fas fa-heart" style="color: #e74c3c;"></i></p>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
