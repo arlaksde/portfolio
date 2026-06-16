@@ -1,4 +1,4 @@
-// VARIABEL GLOBAL UNTUK KATEGORI PROJECT
+// Variabel kategori untuk generate tombol otomatis
 const PROJECT_CATEGORIES = [
     { id: 'all', label: 'All Projects' },
     { id: 'iot', label: 'IoT & Hardware' },
@@ -7,14 +7,21 @@ const PROJECT_CATEGORIES = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Inisialisasi AOS Animation
+    // 1. Preloader Logic
+    setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    }, 1000);
+
     AOS.init({ once: true, offset: 50, duration: 800 });
     document.getElementById("current-year").textContent = new Date().getFullYear();
 
-    // Fungsi Utama untuk memuat semua data JSON
-    async function loadAllData() {
+    // 2. FUNGSI FETCH SEMUA JSON
+    async function loadData() {
         try {
-            // Fetch semua JSON secara bersamaan
             const [profileRes, eduRes, expRes, projRes, certRes] = await Promise.all([
                 fetch('profile.json'),
                 fetch('education.json'),
@@ -23,37 +30,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetch('certificates.json')
             ]);
 
-            // Konversi response ke bentuk JSON
             const profileData = await profileRes.json();
             const educationData = await eduRes.json();
             const experienceData = await expRes.json();
             const projectsData = await projRes.json();
             const certificatesData = await certRes.json();
 
-            // Render masing-masing bagian
             renderProfile(profileData);
             renderEducation(educationData);
             renderExperience(experienceData);
             renderProjects(projectsData);
             renderCertificates(certificatesData);
 
-            // Matikan preloader setelah semua data berhasil dimuat
-            const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-
-            AOS.refresh(); // Segarkan animasi
+            AOS.refresh();
         } catch (error) {
-            console.error("Gagal memuat file JSON! Pastikan Anda membukanya menggunakan Live Server.", error);
-            alert("Error loading data. Please open via Live Server/Localhost.");
+            console.error("Gagal memuat JSON:", error);
         }
     }
 
-    // Jalankan fungsi muat data
-    loadAllData();
+    loadData();
 
-    // --- FUNGSI-FUNGSI RENDER DOM ---
-
+    // 3. FUNGSI RENDER KE HTML
     function renderProfile(data) {
         document.getElementById("profile-name").textContent = data.name;
         document.getElementById("profile-description").textContent = data.description;
@@ -65,15 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("profile-email").textContent = data.email;
         document.getElementById("profile-phone").textContent = data.phone;
 
-        // Render Social Media
         const socialLinksContainer = document.getElementById("social-links");
         data.socialMedia.forEach(social => {
-            // Karena di JSON Anda tidak ada "icon", kita tentukan otomatis dari nama platformnya
             let iconClass = 'fas fa-link';
             if(social.platform.toLowerCase().includes('linkedin')) iconClass = 'fab fa-linkedin-in';
             if(social.platform.toLowerCase().includes('github')) iconClass = 'fab fa-github';
 
-            // Pastikan URL valid (tambah https jika belum ada)
             let finalUrl = social.url.startsWith('http') ? social.url : 'https://' + social.url;
 
             const a = document.createElement("a");
@@ -83,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
             socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
         });
 
-        // Handle CV
         const cvBtn = document.getElementById("cv-download");
         if(data.cv && data.cv.file !== "") {
             cvBtn.href = data.cv.file;
@@ -95,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Render Skills
         const skillsGrid = document.getElementById("skills-grid");
         data.skills.forEach(skill => {
             const skillDiv = document.createElement("div");
@@ -149,12 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function renderProjects(projectsData) {
+    function renderProjects(data) {
         const filterContainer = document.getElementById("filter-container");
         const projectsGrid = document.getElementById("projects-grid");
         
-        // Generate Buttons Filter
-        filterContainer.innerHTML = ''; // Bersihkan dulu
+        filterContainer.innerHTML = ''; 
         PROJECT_CATEGORIES.forEach(category => {
             const btn = document.createElement("button");
             btn.className = `filter-btn ${category.id === 'all' ? 'active' : ''}`;
@@ -163,12 +154,13 @@ document.addEventListener("DOMContentLoaded", () => {
             filterContainer.appendChild(btn);
         });
 
-        // Fungsi Filter Data
         function displayFilteredProjects(filterCategory) {
             projectsGrid.innerHTML = '';
+            
+            // Baca array category dari file projects.json
             const filteredProjects = filterCategory === 'all' 
-                ? projectsData 
-                : projectsData.filter(p => p.category && p.category.includes(filterCategory));
+                ? data 
+                : data.filter(p => p.category && p.category.includes(filterCategory));
 
             filteredProjects.forEach((project, index) => {
                 const imageElement = project.image && project.image !== "" 
@@ -203,10 +195,8 @@ document.addEventListener("DOMContentLoaded", () => {
             AOS.refresh();
         }
 
-        // Tampilkan semua data saat pertama kali dimuat
         displayFilteredProjects('all');
 
-        // Event Listener Tombol Filter
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -240,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- SCROLL TO TOP LOGIC ---
+    // Scroll to Top Logic
     const scrollTopBtn = document.getElementById("scrollTopBtn");
     window.addEventListener("scroll", () => {
         if (window.scrollY > 300) {
