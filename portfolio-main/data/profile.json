@@ -22,7 +22,7 @@
     "skills": [
         {"name": "Internet of Things", "icon": "fas fa-wifi", "level": 90},
 	{"name": "Hardware Programming", "icon": "fas fa-c", "level": 90},
-        {"name": "Web Programming", "icon": "fab fa-js", "level": 70},
+        
 	{"name": "Project Management", "icon": "fas fa-list-check", "level": 95},
 	{"name": "Foreign Languages", "icon": "fas fa-language", "level": 50}
     ]
