@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-icon"><i class="fas fa-microchip"></i></div>
+    </div>
+
+    <!-- Background Animation -->
     <div class="bg-animation">
         <div class="color-sphere sphere-1"></div>
         <div class="color-sphere sphere-2"></div>
@@ -22,7 +28,7 @@
                 <li><a href="#profile" data-tooltip="Profile"><i class="fas fa-user"></i><span class="nav-text">Profile</span></a></li>
                 <li><a href="#education" data-tooltip="Education"><i class="fas fa-graduation-cap"></i><span class="nav-text">Education</span></a></li>
                 <li><a href="#experience" data-tooltip="Experience"><i class="fas fa-briefcase"></i><span class="nav-text">Experience</span></a></li>
-                <li><a href="#projects" data-tooltip="Projects"><i class="fas fa-code"></i><span class="nav-text">Research & Projects</span></a></li>
+                <li><a href="#projects" data-tooltip="Projects"><i class="fas fa-code"></i><span class="nav-text">Projects</span></a></li>
                 <li><a href="#certificates" data-tooltip="Certificates"><i class="fas fa-certificate"></i><span class="nav-text">Certificates</span></a></li>
             </ul>
         </nav>
@@ -37,15 +43,17 @@
                         <div class="profile-contact glass-card">
                             <p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
                             <p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
-                            <div class="social-links" id="social-links"></div>
-                            <a href="#" id="cv-download" class="cv-download-btn" title="Download CV"><i class="fas fa-file-pdf"></i></a>
+                            <!-- FIX: Tombol CV dimasukkan ke dalam container social-links agar sejajar -->
+                            <div class="social-links" id="social-links">
+                                <a href="#" id="cv-download" class="cv-download-btn" title="CV is currently unavailable"><i class="fas fa-file-pdf"></i></a>
+                            </div>
                         </div>
                     </div>
                     <div class="profile-info">
                         <h1 id="profile-name" class="gradient-text"></h1>
                         <p id="profile-description" class="glass-card"></p>
                         <div class="skills-container glass-card" id="skills-container" data-aos="fade-left" data-aos-delay="200">
-                            <h3><i class="fas fa-bolt"></i> Skills</h3>
+                            <h3><i class="fas fa-bolt"></i> Tech Stack & Skills</h3>
                             <div class="skills-grid" id="skills-grid"></div>
                         </div>
                     </div>
@@ -70,6 +78,13 @@
         <section id="projects" class="section">
             <div class="container">
                 <h2 class="gradient-text" data-aos="fade-down">Research and Projects</h2>
+                <!-- Project Filters -->
+                <div class="filter-container" data-aos="fade-up">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="iot">IoT & Hardware</button>
+                    <button class="filter-btn" data-filter="automation">Industrial Automation</button>
+                    <button class="filter-btn" data-filter="web">Web App</button>
+                </div>
                 <div class="projects-grid" id="projects-grid"></div>
             </div>
         </section>
@@ -85,6 +100,9 @@
     <footer>
         <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata</p>
     </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/script.js"></script>
