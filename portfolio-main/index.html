@@ -3,102 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arlaksde - Portfolio</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta name="description" content="Arya Laksmana Dewanata — Electronic Engineering Technology student & IoT / industrial automation developer. OEE monitoring systems, embedded hardware, and web platforms.">
+    <meta name="theme-color" content="#050810">
+    <title>Arya Laksmana Dewanata — Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="loader-icon"><i class="fas fa-microchip"></i></div>
+        <p class="mono preloader-text">booting interface<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
     </div>
 
-    <!-- Background Animation -->
-    <div class="bg-animation">
-        <div class="color-sphere sphere-1"></div>
-        <div class="color-sphere sphere-2"></div>
-        <div class="color-sphere sphere-3"></div>
+    <!-- Ambient circuit-trace background (OGL/WebGL, js/background.js) -->
+    <div class="circuit-bg" id="circuit-bg" aria-hidden="true">
+        <div class="circuit-bg__vignette"></div>
+        <div class="circuit-bg__threads" id="circuit-threads"></div>
     </div>
-
-    <header>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#profile" data-tooltip="Profile"><i class="fas fa-user"></i><span class="nav-text">Profile</span></a></li>
-                <li><a href="#education" data-tooltip="Education"><i class="fas fa-graduation-cap"></i><span class="nav-text">Education</span></a></li>
-                <li><a href="#experience" data-tooltip="Experience"><i class="fas fa-briefcase"></i><span class="nav-text">Experience</span></a></li>
-                <li><a href="#projects" data-tooltip="Projects"><i class="fas fa-code"></i><span class="nav-text">Projects</span></a></li>
-                <li><a href="#certificates" data-tooltip="Certificates"><i class="fas fa-certificate"></i><span class="nav-text">Certificates</span></a></li>
-            </ul>
-        </nav>
-    </header>
 
     <main>
-        <section id="profile" class="section">
-            <div class="container">
-                <div class="profile-content" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="profile-image-container">
-                        <img id="profile-pic" src="" alt="Profile Picture" class="profile-image">
-                        <div class="profile-contact glass-card">
-                            <p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
-                            <p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
-                            <!-- FIX: Tombol CV dimasukkan ke dalam container social-links agar sejajar -->
-                            <div class="social-links" id="social-links">
-                                <a href="#" id="cv-download" class="cv-download-btn" title="CV is currently unavailable"><i class="fas fa-file-pdf"></i></a>
-                            </div>
+        <section id="profile" class="section hero">
+            <div class="container hero__grid">
+
+                <div class="hero__portrait-col" data-reveal data-reveal-dir="vertical">
+                    <div class="tilt-figure" id="profile-tilt">
+                        <div class="tilt-inner">
+                            <img id="profile-pic" src="" alt="Profile picture" class="tilt-img">
+                            <div class="tilt-sheen"></div>
                         </div>
+                        <span class="tilt-caption mono">ENGINEER</span>
                     </div>
-                    <div class="profile-info">
-                        <h1 id="profile-name" class="gradient-text"></h1>
-                        <p id="profile-description" class="glass-card"></p>
-                        <div class="skills-container glass-card" id="skills-container" data-aos="fade-left" data-aos-delay="200">
-                            <h3><i class="fas fa-bolt"></i> Tech Stack & Skills</h3>
-                            <div class="skills-grid" id="skills-grid"></div>
-                        </div>
+
+                    <div class="panel spotlight-card hero__contact-card" data-spotlight>
+                        <p><i class="fas fa-envelope"></i> <span id="profile-email"></span></p>
+                        <p><i class="fas fa-phone"></i> <span id="profile-phone"></span></p>
+                        <div class="hero__actions" id="hero-actions"></div>
                     </div>
                 </div>
+
+                <div class="hero__info-col" data-reveal data-reveal-dir="vertical" data-reveal-delay="0.12">
+                    <span class="eyebrow">
+                        <span class="dot"></span>
+                        <span class="path">$ cat data/<em>profile</em>.json</span>
+                    </span>
+
+                    <h1 id="profile-name" class="hero__name split-pending"></h1>
+                    <p class="hero__role mono">Electronic Engineering Technology &middot; IoT &amp; Industrial Automation</p>
+                    <p id="profile-description" class="hero__desc"></p>
+
+                    <div class="hero__stats" id="hero-stats">
+                        <div class="stat">
+                            <span class="stat__num"><span class="countup" data-countup-to="0" data-countup-suffix="+">0</span></span>
+                            <span class="stat__label mono">years in electronics</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__num"><span class="countup" data-countup-to="0">0</span></span>
+                            <span class="stat__label mono">projects shipped</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__num"><span class="countup" data-countup-to="0">0</span></span>
+                            <span class="stat__label mono">certifications</span>
+                        </div>
+                    </div>
+
+                    <div class="panel spotlight-card hero__skills" data-spotlight>
+                        <h3><i class="fas fa-bolt"></i> Tech Stack &amp; Skills</h3>
+                        <div class="skills-grid" id="skills-grid"></div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <section id="education" class="section">
             <div class="container">
-                <h2 class="gradient-text" data-aos="fade-down">Education</h2>
-                <div class="education-list" id="education-list"></div>
+                <div data-reveal>
+                    <span class="eyebrow"><span class="dot"></span><span class="path">$ cat data/<em>education</em>.json</span></span>
+                    <h2 class="gradient-text">Education</h2>
+                </div>
+                <div class="timeline" id="education-list"></div>
             </div>
         </section>
 
         <section id="experience" class="section">
             <div class="container">
-                <h2 class="gradient-text" data-aos="fade-down">Work Experience</h2>
-                <div class="experience-list" id="experience-list"></div>
+                <div data-reveal>
+                    <span class="eyebrow"><span class="dot"></span><span class="path">$ cat data/<em>experience</em>.json</span></span>
+                    <h2 class="gradient-text">Work Experience</h2>
+                </div>
+                <div class="timeline" id="experience-list"></div>
             </div>
         </section>
 
-<section id="projects" class="section">
+        <section id="projects" class="section">
             <div class="container">
-                <h2 class="gradient-text" data-aos="fade-down">Research and Projects</h2>
-                <div class="filter-container" id="filter-container" data-aos="fade-up"></div>
+                <div data-reveal>
+                    <span class="eyebrow"><span class="dot"></span><span class="path">$ cat data/<em>projects</em>.json</span></span>
+                    <h2 class="gradient-text">Research and Projects</h2>
+                </div>
+                <div class="filter-container" id="filter-container"></div>
                 <div class="projects-grid" id="projects-grid"></div>
             </div>
         </section>
 
         <section id="certificates" class="section">
             <div class="container">
-                <h2 class="gradient-text" data-aos="fade-down">Certificates</h2>
-                <div class="experience-list" id="certificates-list"></div>
+                <div data-reveal>
+                    <span class="eyebrow"><span class="dot"></span><span class="path">$ cat data/<em>certificates</em>.json</span></span>
+                    <h2 class="gradient-text">Certificates</h2>
+                </div>
+                <div class="timeline" id="certificates-list"></div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; <span id="current-year"></span> Arya Laksmana Dewanata</p>
+    <footer class="site-footer">
+        <p class="mono">&copy; <span id="current-year"></span> Arya Laksmana Dewanata<span class="site-footer__sep">&middot;</span>built with vanilla JS &amp; React Bits-style motion</p>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollTopBtn" class="scroll-top-btn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+    <!-- Dock navigation (js/effects.js builds this) -->
+    <nav class="dock-panel" id="dock-panel" aria-label="Section navigation"></nav>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/script.js"></script>
+    <!-- GSAP core + SplitText plugin (used for the hero name's per-character
+         reveal). Scroll reveals elsewhere use plain IntersectionObserver
+         instead of ScrollTrigger, to keep this a light, dependency-lean,
+         no-build static site. Classic scripts so window.gsap exists before
+         js/script.js (a module, deferred by default) runs. -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>
