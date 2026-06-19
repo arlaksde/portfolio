@@ -1,255 +1,282 @@
+import { initCircuitBackground } from './background.js'
+import {
+  initReveal,
+  observeReveal,
+  attachSpotlight,
+  attachTilt,
+  initCountUps,
+  setCountUpTargets,
+  initDock,
+  initSplitHero
+} from './effects.js'
+
 const PROJECT_CATEGORIES = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'iot', label: 'IoT & Hardware' },
-    { id: 'automation', label: 'Industrial Automation' },
-    { id: 'web', label: 'Web App' }
-];
+  { id: 'all', label: 'All Projects' },
+  { id: 'iot', label: 'IoT & Hardware' },
+  { id: 'automation', label: 'Industrial Automation' },
+  { id: 'web', label: 'Web App' }
+]
 
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Preloader Logic
-    function hidePreloader() {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.display = 'none', 500);
-        }
-    }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('current-year').textContent = new Date().getFullYear()
 
-    AOS.init({ once: true, offset: 50, duration: 800 });
-    document.getElementById("current-year").textContent = new Date().getFullYear();
+  initCircuitBackground(document.getElementById('circuit-threads'))
+  initDock()
+  initReveal()
+  document.querySelectorAll('[data-spotlight]').forEach(attachSpotlight)
 
-    // 2. FUNGSI FETCH JSON (Sekarang nembak ke folder data/ sesuai struktur GitHub kamu)
-    async function fetchJson(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
-        } catch (e) {
-            console.error(`Gagal meload ${url}. Detail error:`, e);
-            return null; 
-        }
-    }
+  loadData()
+})
 
-    async function loadData() {
-        // PERBAIKAN: Path diarahkan ke folder data/
-        const profileData = await fetchJson('data/profile.json');
-        const educationData = await fetchJson('data/education.json');
-        const experienceData = await fetchJson('data/experience.json');
-        const projectsData = await fetchJson('data/projects.json');
-        const certificatesData = await fetchJson('data/certificates.json');
+function hidePreloader() {
+  const preloader = document.getElementById('preloader')
+  if (preloader) {
+    preloader.classList.add('is-hidden')
+    setTimeout(() => (preloader.style.display = 'none'), 500)
+  }
+}
 
-        // Render hanya jika datanya berhasil didapat
-        if (profileData) renderProfile(profileData);
-        if (educationData) renderEducation(educationData);
-        if (experienceData) renderExperience(experienceData);
-        if (projectsData) renderProjects(projectsData);
-        if (certificatesData) renderCertificates(certificatesData);
+async function fetchJson(url) {
+  try {
+    const response = await fetch(url)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    return await response.json()
+  } catch (e) {
+    console.error(`Failed to load ${url}:`, e)
+    return null
+  }
+}
 
-        hidePreloader(); // Matikan loading screen
-        AOS.refresh();
-    }
+async function loadData() {
+  const [profile, education, experience, projects, certificates] = await Promise.all([
+    fetchJson('data/profile.json'),
+    fetchJson('data/education.json'),
+    fetchJson('data/experience.json'),
+    fetchJson('data/projects.json'),
+    fetchJson('data/certificates.json')
+  ])
 
-    loadData();
+  if (profile) renderProfile(profile)
+  if (education) renderEducation(education)
+  if (experience) renderExperience(experience)
+  if (projects) renderProjects(projects)
+  if (certificates) renderCertificates(certificates)
 
-    // 3. FUNGSI RENDER HTML
-    function renderProfile(data) {
-        if(!data) return;
-        document.getElementById("profile-name").textContent = data.name;
-        document.getElementById("profile-description").textContent = data.description;
-        
-        const profilePic = document.getElementById("profile-pic");
-        profilePic.src = data.profileImage;
-        profilePic.onerror = () => { profilePic.src = 'https://ui-avatars.com/api/?name=Arya+Dewanata&background=0f172a&color=4facfe&size=300'; };
+  applyStats({ education, experience, projects, certificates })
 
-        document.getElementById("profile-email").textContent = data.email;
-        document.getElementById("profile-phone").textContent = data.phone;
+  hidePreloader()
+  initCountUps()
+}
 
-        const socialLinksContainer = document.getElementById("social-links");
-        if(data.socialMedia) {
-            data.socialMedia.forEach(social => {
-                let iconClass = 'fas fa-link';
-                if(social.platform.toLowerCase().includes('linkedin')) iconClass = 'fab fa-linkedin-in';
-                if(social.platform.toLowerCase().includes('github')) iconClass = 'fab fa-github';
+/* ------------------------------- Stats ------------------------------- */
+function extractYears(str = '') {
+  return (str.match(/\d{4}/g) || []).map(Number)
+}
 
-                let finalUrl = social.url.startsWith('http') ? social.url : 'https://' + social.url;
-                const a = document.createElement("a");
-                a.href = finalUrl;
-                a.target = "_blank";
-                a.innerHTML = `<i class="${iconClass}"></i>`;
-                socialLinksContainer.insertBefore(a, document.getElementById("cv-download"));
-            });
-        }
+function applyStats({ education, experience, projects, certificates }) {
+  const years = [...(education || []).flatMap(e => extractYears(e.year)), ...(experience || []).flatMap(e => extractYears(e.year))]
+  const earliest = years.length ? Math.min(...years) : null
+  const currentYear = new Date().getFullYear()
+  const yearsActive = earliest ? Math.max(currentYear - earliest, 1) : null
 
-        const cvBtn = document.getElementById("cv-download");
-        if(data.cv && data.cv.file !== "") {
-            cvBtn.href = data.cv.file;
-            cvBtn.download = "";
-        } else {
-            cvBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                alert("My CV is currently being updated. Please check back later!");
-            });
-        }
+  setCountUpTargets([yearsActive ?? 0, projects?.length ?? 0, certificates?.length ?? 0])
+}
 
-        const skillsGrid = document.getElementById("skills-grid");
-        if(data.skills) {
-            data.skills.forEach(skill => {
-                const skillDiv = document.createElement("div");
-                skillDiv.className = "skill-item";
-                skillDiv.innerHTML = `<i class="${skill.icon} skill-icon"></i><span class="skill-name">${skill.name}</span>`;
-                skillsGrid.appendChild(skillDiv);
-            });
-        }
-    }
+/* ------------------------------- Profile ------------------------------- */
+function renderProfile(data) {
+  document.getElementById('profile-description').textContent = data.description
 
-    function renderEducation(data) {
-        if(!data) return;
-        const eduList = document.getElementById("education-list");
-        data.forEach((edu, idx) => {
-            const eduCard = document.createElement("div");
-            eduCard.className = "education-item glass-card";
-            eduCard.setAttribute("data-aos", "fade-up");
-            eduCard.setAttribute("data-aos-delay", idx * 100);
-            eduCard.innerHTML = `
-                <div class="edu-header">
-                    <img src="${edu.logo}" alt="${edu.university}" class="edu-logo" onerror="this.src='https://ui-avatars.com/api/?name=${edu.university[0]}&background=ffffff&color=0f172a'">
-                    <div class="header-text">
-                        <h3>${edu.university}</h3>
-                        <p class="subtitle">${edu.major}</p>
-                        <p class="year"><i class="far fa-calendar-alt"></i> ${edu.year}</p>
-                    </div>
-                </div>
-                <p class="desc-text">${edu.description}</p>
-            `;
-            eduList.appendChild(eduCard);
-        });
-    }
+  const nameEl = document.getElementById('profile-name')
+  nameEl.textContent = data.name
+  initSplitHero(nameEl)
 
-    function renderExperience(data) {
-        if(!data) return;
-        const expList = document.getElementById("experience-list");
-        data.forEach((exp, idx) => {
-            const expCard = document.createElement("div");
-            expCard.className = "experience-item glass-card";
-            expCard.setAttribute("data-aos", "fade-up");
-            expCard.setAttribute("data-aos-delay", idx * 100);
-            expCard.innerHTML = `
-                <div class="exp-header">
-                    <img src="${exp.logo}" alt="${exp.company}" class="exp-logo" onerror="this.src='https://ui-avatars.com/api/?name=${exp.company[0]}&background=ffffff&color=0f172a'">
-                    <div class="header-text">
-                        <h3>${exp.company}</h3>
-                        <p class="subtitle">${exp.position}</p>
-                        <p class="year"><i class="far fa-calendar-alt"></i> ${exp.year}</p>
-                    </div>
-                </div>
-                <p class="desc-text">${exp.description}</p>
-            `;
-            expList.appendChild(expCard);
-        });
-    }
+  const profilePic = document.getElementById('profile-pic')
+  profilePic.src = data.profileImage
+  profilePic.alt = data.name
+  profilePic.onerror = () => {
+    profilePic.onerror = null
+    profilePic.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=050810&color=00f2fe&size=300`
+  }
+  attachTilt(document.getElementById('profile-tilt'))
 
-    function renderProjects(data) {
-        if(!data) return;
-        const filterContainer = document.getElementById("filter-container");
-        const projectsGrid = document.getElementById("projects-grid");
-        
-        filterContainer.innerHTML = ''; 
-        PROJECT_CATEGORIES.forEach(category => {
-            const btn = document.createElement("button");
-            btn.className = `filter-btn ${category.id === 'all' ? 'active' : ''}`;
-            btn.setAttribute("data-filter", category.id);
-            btn.textContent = category.label;
-            filterContainer.appendChild(btn);
-        });
+  document.getElementById('profile-email').textContent = data.email
+  document.getElementById('profile-phone').textContent = data.phone
 
-        function displayFilteredProjects(filterCategory) {
-            projectsGrid.innerHTML = '';
-            
-            const filteredProjects = filterCategory === 'all' 
-                ? data 
-                : data.filter(p => p.category && p.category.includes(filterCategory));
+  const actions = document.getElementById('hero-actions')
+  actions.innerHTML = ''
 
-            filteredProjects.forEach((project, index) => {
-                const imageElement = project.image && project.image !== "" 
-                    ? `<img src="${project.image}" alt="${project.title}" onerror="this.outerHTML='<div class=\\'project-placeholder\\'><i class=\\'fas fa-microchip\\'></i></div>'">` 
-                    : `<div class="project-placeholder"><i class="fas fa-microchip"></i></div>`;
+  ;(data.socialMedia || []).forEach(social => {
+    let iconClass = 'fas fa-link'
+    if (social.platform.toLowerCase().includes('linkedin')) iconClass = 'fab fa-linkedin-in'
+    if (social.platform.toLowerCase().includes('github')) iconClass = 'fab fa-github'
+    const url = social.url.startsWith('http') ? social.url : `https://${social.url}`
 
-                let techStackHTML = project.techStack ? `<div class="tech-stack-container">${project.techStack.map(tech => `<span class="tech-badge">${tech}</span>`).join('')}</div>` : '';
-                let roleHTML = project.role ? `<span><i class="fas fa-user-tag"></i> ${project.role}</span>` : '';
-                let partnerHTML = project.partner ? `<span><i class="fas fa-building"></i> ${project.partner}</span>` : '';
-                let videoHTML = project.video && project.video !== "" ? `<a href="${project.video}" target="_blank" class="demo-btn"><i class="fas fa-play-circle"></i> Watch Demo</a>` : '';
+    const a = document.createElement('a')
+    a.href = url
+    a.target = '_blank'
+    a.rel = 'noopener noreferrer'
+    a.className = 'icon-btn glare-hover'
+    a.title = social.platform
+    a.innerHTML = `<i class="${iconClass}"></i>`
+    actions.appendChild(a)
+  })
 
-                const projectCard = document.createElement("div");
-                projectCard.className = "project-card glass-card";
-                projectCard.setAttribute("data-aos", "zoom-in-up");
-                projectCard.setAttribute("data-aos-delay", (index % 3) * 100);
-                projectCard.innerHTML = `
-                    <div class="project-image">${imageElement}</div>
-                    <div class="project-info">
-                        <h3>${project.title}</h3>
-                        <div class="project-meta">
-                            <span><i class="far fa-calendar-alt"></i> ${project.year}</span>
-                            ${roleHTML}
-                            ${partnerHTML}
-                        </div>
-                        <p class="project-desc">${project.description}</p>
-                        ${videoHTML}
-                        ${techStackHTML}
-                    </div>
-                `;
-                projectsGrid.appendChild(projectCard);
-            });
-            AOS.refresh();
-        }
+  const cvBtn = document.createElement('a')
+  cvBtn.className = 'icon-btn glare-hover'
+  cvBtn.innerHTML = `<i class="${data.cv?.icon || 'fas fa-file-pdf'}"></i>`
+  if (data.cv?.file) {
+    cvBtn.href = data.cv.file
+    cvBtn.setAttribute('download', '')
+    cvBtn.title = data.cv.text || 'Download CV'
+  } else {
+    cvBtn.href = '#'
+    cvBtn.classList.add('is-disabled')
+    cvBtn.title = 'CV is currently unavailable'
+    cvBtn.addEventListener('click', e => {
+      e.preventDefault()
+      alert('My CV is currently being updated. Please check back later!')
+    })
+  }
+  actions.appendChild(cvBtn)
 
-        displayFilteredProjects('all');
+  const skillsGrid = document.getElementById('skills-grid')
+  skillsGrid.innerHTML = (data.skills || [])
+    .map(skill => `<div class="skill-chip"><i class="${skill.icon}"></i><span>${skill.name}</span></div>`)
+    .join('')
+}
 
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                displayFilteredProjects(btn.getAttribute('data-filter'));
-            });
-        });
-    }
+/* ------------------------------ Education ------------------------------ */
+function renderEducation(data) {
+  const list = document.getElementById('education-list')
+  data.forEach(edu => {
+    const item = document.createElement('div')
+    item.className = 'timeline-item panel'
+    item.setAttribute('data-reveal', '')
+    item.setAttribute('data-reveal-dir', 'horizontal')
+    item.innerHTML = `
+      <div class="item-header">
+        <img src="${edu.logo}" alt="${edu.university}" class="item-logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(edu.university[0])}&background=ffffff&color=050810'">
+        <div class="item-header-text">
+          <h3>${edu.university}</h3>
+          <p class="subtitle">${edu.major}</p>
+          <p class="year"><i class="far fa-calendar-alt"></i> ${edu.year}</p>
+        </div>
+      </div>
+      <p class="item-desc">${edu.description}</p>
+    `
+    list.appendChild(item)
+    observeReveal(item)
+  })
+}
 
-    function renderCertificates(data) {
-        if(!data) return;
-        const certList = document.getElementById("certificates-list");
-        data.forEach((cert, idx) => {
-            const certCard = document.createElement("div");
-            certCard.className = "experience-item glass-card";
-            certCard.setAttribute("data-aos", "fade-right");
-            certCard.setAttribute("data-aos-delay", idx * 100);
-            certCard.innerHTML = `
-                <div class="exp-header">
-                    <img src="${cert.logo}" alt="${cert.issuer}" class="exp-logo" onerror="this.src='https://ui-avatars.com/api/?name=${cert.issuer[0]}&background=ffffff&color=0f172a'">
-                    <div class="header-text">
-                        <h3>${cert.title}</h3>
-                        <p class="subtitle">${cert.issuer}</p>
-                        <p class="year"><i class="far fa-calendar-alt"></i> ${cert.year}</p>
-                    </div>
-                </div>
-                <p class="desc-text" style="margin-bottom: 1rem;">${cert.description}</p>
-                <a href="${cert.link}" target="_blank" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-external-link-alt"></i> View Certificate</a>
-            `;
-            certList.appendChild(certCard);
-        });
-    }
+/* ------------------------------ Experience ------------------------------ */
+function renderExperience(data) {
+  const list = document.getElementById('experience-list')
+  data.forEach(exp => {
+    const item = document.createElement('div')
+    item.className = 'timeline-item panel'
+    item.setAttribute('data-reveal', '')
+    item.setAttribute('data-reveal-dir', 'horizontal')
+    item.innerHTML = `
+      <div class="item-header">
+        <img src="${exp.logo}" alt="${exp.company}" class="item-logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(exp.company[0])}&background=ffffff&color=050810'">
+        <div class="item-header-text">
+          <h3>${exp.company}</h3>
+          <p class="subtitle">${exp.position}</p>
+          <p class="year"><i class="far fa-calendar-alt"></i> ${exp.year}</p>
+        </div>
+      </div>
+      <p class="item-desc">${exp.description}</p>
+    `
+    list.appendChild(item)
+    observeReveal(item)
+  })
+}
 
-    // Scroll to Top Logic
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
-    if(scrollTopBtn) {
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.classList.add("show");
-            } else {
-                scrollTopBtn.classList.remove("show");
-            }
-        });
-        scrollTopBtn.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-    }
-});
+/* ------------------------------ Certificates ----------------------------- */
+function renderCertificates(data) {
+  const list = document.getElementById('certificates-list')
+  data.forEach(cert => {
+    const item = document.createElement('div')
+    item.className = 'timeline-item panel'
+    item.setAttribute('data-reveal', '')
+    item.setAttribute('data-reveal-dir', 'horizontal')
+    item.innerHTML = `
+      <div class="item-header">
+        <img src="${cert.logo}" alt="${cert.issuer}" class="item-logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(cert.issuer[0])}&background=ffffff&color=050810'">
+        <div class="item-header-text">
+          <h3>${cert.title}</h3>
+          <p class="subtitle">${cert.issuer}</p>
+          <p class="year"><i class="far fa-calendar-alt"></i> ${cert.year}</p>
+        </div>
+      </div>
+      <p class="item-desc">${cert.description}</p>
+      <a href="${cert.link}" target="_blank" rel="noopener noreferrer" class="cert-link"><i class="fas fa-external-link-alt"></i> View Certificate</a>
+    `
+    list.appendChild(item)
+    observeReveal(item)
+  })
+}
+
+/* ------------------------------- Projects -------------------------------- */
+function renderProjects(data) {
+  const filterContainer = document.getElementById('filter-container')
+  const projectsGrid = document.getElementById('projects-grid')
+
+  filterContainer.innerHTML = PROJECT_CATEGORIES.map(
+    cat => `<button class="filter-btn ${cat.id === 'all' ? 'is-active' : ''}" data-filter="${cat.id}">${cat.label}</button>`
+  ).join('')
+
+  function display(filter) {
+    projectsGrid.innerHTML = ''
+    const filtered = filter === 'all' ? data : data.filter(p => p.category?.includes(filter))
+
+    filtered.forEach(project => {
+      const card = document.createElement('div')
+      card.className = 'project-card panel spotlight-card'
+      card.setAttribute('data-spotlight', '')
+      card.setAttribute('data-reveal', '')
+
+      const imageHtml = project.image
+        ? `<img src="${project.image}" alt="${project.title}" onerror="this.outerHTML='<div class=&quot;project-placeholder&quot;><i class=&quot;fas fa-microchip&quot;></i></div>'">`
+        : `<div class="project-placeholder"><i class="fas fa-microchip"></i></div>`
+
+      const techHtml = project.techStack
+        ? `<div class="tech-stack">${project.techStack.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>`
+        : ''
+      const roleHtml = project.role ? `<span><i class="fas fa-user-tag"></i> ${project.role}</span>` : ''
+      const partnerHtml = project.partner ? `<span><i class="fas fa-building"></i> ${project.partner}</span>` : ''
+      const videoHtml = project.video
+        ? `<a href="${project.video}" target="_blank" rel="noopener noreferrer" class="demo-btn glare-hover"><i class="fas fa-play-circle"></i> Watch Demo</a>`
+        : ''
+
+      card.innerHTML = `
+        <div class="project-image">${imageHtml}</div>
+        <div class="project-info">
+          <h3>${project.title}</h3>
+          <div class="project-meta">
+            <span><i class="far fa-calendar-alt"></i> ${project.year}</span>
+            ${roleHtml}
+            ${partnerHtml}
+          </div>
+          <p class="project-desc">${project.description}</p>
+          ${videoHtml}
+          ${techHtml}
+        </div>
+      `
+      projectsGrid.appendChild(card)
+      attachSpotlight(card)
+      observeReveal(card)
+    })
+  }
+
+  display('all')
+
+  filterContainer.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'))
+      btn.classList.add('is-active')
+      display(btn.getAttribute('data-filter'))
+    })
+  })
+}
