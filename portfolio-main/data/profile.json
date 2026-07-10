@@ -7,7 +7,7 @@
     "socialMedia": [
         {
             "platform": "LinkedIn",
-            "url": "www.linkedin.com/in/arya-laksmana-dewanata-530934251"
+            "url": "www.linkedin.com/in/arlaksde"
         },
         {
             "platform": "GitHub",
@@ -16,7 +16,7 @@
     ],
     "cv": {
 			"text": "Download CV",
-			"file": "",
+			"file": "docs/resume_AryaLaksmanaDewanata_SLB.pdf",
 			"icon": "fas fa-file-pdf"
 	},
     "skills": [
