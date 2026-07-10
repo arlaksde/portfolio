@@ -6,7 +6,7 @@
     "partner": "",
     "role": "Internship",
     "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi single-board computer as the central on-premise server. ",
-    "image": "oee.jpeg",
+    "image": "images/oee.jpeg",
     "video": "",
     "techStack": ["Automation", "Monitoring", "IoT"]
   },
@@ -17,7 +17,7 @@
     "partner": "",
     "role": "Freelance",
     "description": "Assisted in assembling and programming RIKUB (Riset Konsorium Unggulan Berdampak) ",
-    "image": "rkb.jpeg",
+    "image": "images/rkb.jpeg",
     "video": "",
     "techStack": ["Automation", "Monitoring", "IoT"]
   },
