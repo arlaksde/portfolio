@@ -91,5 +91,27 @@
     "image": "",
     "video": "",
     "techStack": ["Infrared Sensors", "Touch Sensors", "Hardware Security"]
+  },
+  {
+    "title": "Overall Equipment Effectiveness",
+    "category": ["iot"],
+    "year": "2026",
+    "partner": "",
+    "role": "Internship",
+    "description": "Designed and implemented an end-to-end Overall Equipment Effectiveness (OEE) monitoring system utilizing an Orange Pi single-board computer as the central on-premise server. ",
+    "image": "",
+    "video": "",
+    "techStack": ["Automation", "Monitoring", "IoT"]
+  },
+    {
+    "title": "Riset Konsorium Unggulan Berdampak",
+    "category": ["iot"],
+    "year": "2026",
+    "partner": "",
+    "role": "Freelance",
+    "description": "Assisted in assembling and programming RIKUB (Riset Konsorium Unggulan Berdampak) ",
+    "image": "",
+    "video": "",
+    "techStack": ["Automation", "Monitoring", "IoT"]
   }
 ]
