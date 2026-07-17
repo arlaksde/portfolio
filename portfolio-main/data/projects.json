@@ -37,7 +37,7 @@
     "year": "2025",
     "description": "Membangun sistem berbasis Internet of Things (IoT) untuk otomatisasi pemeliharaan akuarium koi, memantau kualitas air via berbagai sensor, serta menciptakan ekosistem air yang stabil dan optimal secara otomatis.",
     "image": "images/aquac.jpeg",
-    "video": "https://youtu.be/HuyZNeZBn3c?si=QDu2RkxMFjkwFu96",
+    "video": "",
     "techStack": ["ESP32", "IoT", "Sensors", "Automation"]
   },
   {
